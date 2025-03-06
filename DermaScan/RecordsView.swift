@@ -23,7 +23,7 @@ struct RecordsView: View {
                         Spacer()
 
                         Button(action: {
-                            // 预留点击操作（无动作）
+                            // To Clean All History Data
                         }) {
                             ZStack {
                                 Circle()

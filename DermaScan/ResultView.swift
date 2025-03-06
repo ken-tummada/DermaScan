@@ -84,9 +84,8 @@ struct ResultView: View {
                 .padding(.horizontal, 32)
                 .padding(.top, 5)
 
-                // **🔹 图片 & 过渡动画**
                 ZStack {
-                    // **用户上传的图片**
+                    // Image Uploaded
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFill()
@@ -94,7 +93,7 @@ struct ResultView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .contentShape(Rectangle())
 
-                    // **黑色遮罩层，盖在图片上，保持可见**
+                    // Black Cover
                     if results == nil {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -142,7 +141,7 @@ struct ResultView: View {
                 if let results = results, showFinalResults {
                     VStack {
                         if results.isEmpty {
-                            // **没有匹配到疾病**
+                            // No Disease
                             VStack(spacing: 20) {
                                 ZStack(alignment: .leading) {
                                     RoundedRectangle(cornerRadius: 10)
@@ -190,7 +189,7 @@ struct ResultView: View {
                             }
                             .padding(.horizontal, 32)
                         } else if results.count == 1 {
-                            // **只有 1 个结果**
+                            // Only 1 Result
                             DiagnosisResultView(
                                 result: results[0],
                                 model: model,
@@ -202,7 +201,7 @@ struct ResultView: View {
                             .transition(.opacity)
                             .animation(.easeIn(duration: 0.5), value: showFinalResults)
                         } else {
-                            // **多个结果**
+                            // Multiple Results
                             VStack(spacing: 18) {
                                 VStack(alignment: .leading) {
                                     HStack(spacing: 32) {
@@ -289,7 +288,7 @@ struct DiagnosisResultView: View {
     var body: some View {
         VStack(spacing: 20) {
             Button(action: {
-                // 跳转到疾病说明页
+                // To Disease Introduction Page
             }) {
                 HStack {
                     VStack(alignment: .leading, spacing: spacingAdjustment) {
@@ -381,7 +380,7 @@ struct DiagnosisResult {
     var confidence: Double
 }
 
-// 预览
+// Preview
 
 /*
 #Preview {

@@ -11,7 +11,7 @@ import UIKit
 struct PhotoPickerView: UIViewControllerRepresentable {
     @Binding var isPresented: Bool
     @Binding var selectedImage: UIImage?
-    var onImageSelected: (() -> Void)? // 回调，用于通知 HomeView 进入 ResultView
+    var onImageSelected: (() -> Void)?
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         var parent: PhotoPickerView
@@ -23,7 +23,7 @@ struct PhotoPickerView: UIViewControllerRepresentable {
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let image = info[.originalImage] as? UIImage {
                 parent.selectedImage = image
-                parent.onImageSelected?() // 触发回调，通知 HomeView 进入 ResultView
+                parent.onImageSelected?()
             }
             parent.isPresented = false
         }

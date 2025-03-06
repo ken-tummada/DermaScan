@@ -41,6 +41,7 @@ struct HomeView: View {
                 ]), startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
 
+                // Camera/Logo Icon
                 VStack {
                     HStack {
                         Image("logo")
@@ -79,6 +80,7 @@ struct HomeView: View {
                     }
                     .offset(y: cameraOffset)
 
+                    // Album/Records Icon
                     ZStack {
                         RoundedRectangle(cornerRadius: 1000)
                             .fill(Color.white.opacity(0.05))
@@ -119,6 +121,7 @@ struct HomeView: View {
 
                     Spacer()
 
+                    // Copyright
                     VStack(spacing: 2) {
                         Text("2025 DermaScan. All rights reserved.")
                             .font(.system(size: 15, weight: .regular))
