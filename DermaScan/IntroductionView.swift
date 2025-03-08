@@ -10,6 +10,8 @@ import SwiftCSV
 
 struct IntroductionView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var recordsManager: RecordsManager
     @State private var isShowingRecords = false
     @State private var diseaseData: DiseaseInfo?
     @State private var backgroundColor: Color = .black
@@ -134,6 +136,8 @@ struct IntroductionView: View {
                 .buttonStyle(.borderless)
                 .blurredSheet(.init(.ultraThinMaterial), show: $isShowingRecords) {
                     RecordsView()
+                        .environmentObject(navigationManager)
+                        .environmentObject(recordsManager)
                         .presentationDetents([.medium, .large])
                         .presentationDragIndicator(.visible)
                 }
@@ -171,7 +175,7 @@ struct IntroductionView: View {
                 }
             }
         } catch {
-            print("CSV decoding failed: \(error)")
+            print("CSV parsing failed: \(error)")
         }
     }
 }

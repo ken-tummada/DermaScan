@@ -10,6 +10,7 @@ import SwiftUI
 struct ResultView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var recordsManager: RecordsManager
     @State private var selectedResultIndex = 0
     @State private var isShowingRecords = false
     @State private var results: [DiagnosisResult]? = nil
@@ -17,6 +18,7 @@ struct ResultView: View {
     @State private var showFinalResults = false
     @State private var shouldTriggerFadeOut = false
     @State private var fadeOut = false
+    @State private var hasSaved = false
     
     var image: UIImage
     var model: String
@@ -79,6 +81,8 @@ struct ResultView: View {
                 }
                 .blurredSheet(.init(.ultraThinMaterial), show: $isShowingRecords) {
                     RecordsView()
+                        .environmentObject(navigationManager)
+                        .environmentObject(recordsManager)
                         .presentationDetents([.medium, .large])
                         .presentationDragIndicator(.visible)
                 }
@@ -249,6 +253,8 @@ struct ResultView: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .toolbar(.hidden, for: .navigationBar)
         }
+        
+        
     }
     
     func fetchResults() {
@@ -263,9 +269,127 @@ struct ResultView: View {
                      */
                 ]
                 self.shouldTriggerFadeOut = true
+                
+                if !hasSaved {
+                    saveResults()
+                    hasSaved = true
+                }
             }
         }
     }
+    
+    func saveResults() {
+        guard let results = self.results else { return }
+        
+        let id = generateUniqueID()
+        let timestamp = getCurrentTimestamp()
+        
+        let imagePath = saveImageToFile(image: image, id: id)
+        
+        let record = ScanRecord(
+            id: id,
+            imagePath: imagePath,
+            resultCount: results.count,
+            modelVersion: model,
+            type1: results.count > 0 ? results[0].type : "",
+            confidence1: results.count > 0 ? results[0].confidence : 0,
+            type2: results.count > 1 ? results[1].type : nil,
+            confidence2: results.count > 1 ? results[1].confidence : nil,
+            type3: results.count > 2 ? results[2].type : nil,
+            confidence3: results.count > 2 ? results[2].confidence : nil,
+            timestamp: timestamp
+        )
+        
+        saveResultToCSV(record: record)
+    }
+}
+
+func saveResultToCSV(record: ScanRecord) {
+    let fileManager = FileManager.default
+    let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let csvPath = documentsDirectory.appendingPathComponent("DermaScanRecords/records.csv")
+    
+    // Make Sure CSV Directory Exist
+    let directory = csvPath.deletingLastPathComponent()
+    do {
+        try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+    } catch {
+        print("Can't create CSV Directory: \(error)")
+    }
+    
+    var csvText = ""
+    
+    // Write Header
+    if !fileManager.fileExists(atPath: csvPath.path) {
+        let header = "ID,ImagePath,ResultCount,Model,Type1,Confidence1,Type2,Confidence2,Type3,Confidence3,Timestamp\n"
+        csvText.append(header)
+    }
+    
+    let row = """
+    \(record.id),\(record.imagePath),\(record.resultCount),\(record.modelVersion),\(record.type1),\(record.confidence1),\(record.type2 ?? ""),\(record.confidence2 ?? 0.0),\(record.type3 ?? ""),\(record.confidence3 ?? 0.0),\(record.timestamp)\n
+    """
+    
+    do {
+        if let fileHandle = try? FileHandle(forWritingTo: csvPath) {
+            fileHandle.seekToEndOfFile()
+            if let data = row.data(using: .utf8) {
+                fileHandle.write(data)
+            }
+            fileHandle.closeFile()
+        } else {
+            csvText.append(row)
+            try csvText.write(to: csvPath, atomically: true, encoding: .utf8)
+        }
+    } catch {
+        print("Can't save CSV: \(error)")
+    }
+}
+
+func saveImageToFile(image: UIImage, id: String) -> String {
+    let fileManager = FileManager.default
+    let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let imagePath = documentsDirectory.appendingPathComponent("DermaScanRecords/Images/\(id).jpg")
+    let directory = imagePath.deletingLastPathComponent()
+    
+    // Make Sure Image Directory Exist
+    do {
+        try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+    } catch {
+        print("Failed to create image directory: \(error)")
+        return ""
+    }
+    
+    // Save Image
+    if let jpegData = image.jpegData(compressionQuality: 0.8) {
+        do {
+            try jpegData.write(to: imagePath)
+            print("Image saved successfully at: \(imagePath.path)")
+            return id + ".jpg"
+        } catch {
+            print("Failed to save image: \(error)")
+        }
+    } else {
+        print("Failed to convert image to JPEG")
+    }
+    
+    return ""
+}
+
+func getCurrentTimestamp() -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd  HH:mm"
+    return formatter.string(from: Date())
+}
+
+func generateUniqueID() -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyyMMddHHmmss"
+    let timestamp = formatter.string(from: Date())
+    
+    let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    let randomLetters = String((0..<3).map { _ in letters.randomElement()! })
+    
+    return "\(timestamp)\(randomLetters)" // e.g. 20250308002403BCA
 }
 
 func getIndicatorOffset(results: [DiagnosisResult], selectedIndex: Int) -> CGFloat {
@@ -280,6 +404,7 @@ func getIndicatorOffset(results: [DiagnosisResult], selectedIndex: Int) -> CGFlo
 
 struct DiagnosisResultView: View {
     @EnvironmentObject var navigationManager: NavigationManager
+    @StateObject private var recordsManager = RecordsManager()
     var result: DiagnosisResult
     var model: String
     var boxHeightType: CGFloat
@@ -421,5 +546,8 @@ struct DiagnosisResult {
  */
 
 #Preview {
-    ResultView(image: UIImage(named: "Melanoma")!, model: "1.0")
+    NavigationStack {
+        ResultView(image: UIImage(named: "Melanoma")!, model: "1.0")
+            .environmentObject(NavigationManager())
+    }
 }

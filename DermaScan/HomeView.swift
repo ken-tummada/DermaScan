@@ -14,6 +14,7 @@ struct HomeView: View {
     @State private var isShowingRecords = false
     @State private var selectedImage: UIImage? = nil
     @StateObject private var navigationManager = NavigationManager()
+    @StateObject private var recordsManager = RecordsManager()
     
     var body: some View {
         let screenWidth = UIScreen.main.bounds.width
@@ -153,6 +154,8 @@ struct HomeView: View {
             }
             .blurredSheet(.init(.ultraThinMaterial), show: $isShowingRecords) {
                 RecordsView()
+                    .environmentObject(navigationManager)
+                    .environmentObject(recordsManager)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             }
