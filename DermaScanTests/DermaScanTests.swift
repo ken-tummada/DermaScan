@@ -2,7 +2,7 @@
 //  DermaScanTests.swift
 //  DermaScanTests
 //
-//  Created by 戴 on 2025/3/4.
+//  Created by Zihan on 2025/3/4.
 //
 
 import Testing
