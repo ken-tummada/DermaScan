@@ -12,16 +12,16 @@ struct RecordsView: View {
         ZStack {
             Color(hex: "303134")
                 .ignoresSafeArea()
-
+            
             VStack {
                 ZStack {
                     Text("Records")
                         .foregroundColor(.white)
                         .font(.system(size: 23, weight: .semibold))
-
+                    
                     HStack {
                         Spacer()
-
+                        
                         Button(action: {
                             // To Clean All History Data
                         }) {
@@ -40,7 +40,7 @@ struct RecordsView: View {
                     }
                 }
                 .padding(.horizontal, 32)
-
+                
                 Spacer()
             }
             .padding(.top, 25)

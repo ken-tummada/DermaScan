@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ResultView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var navigationManager: NavigationManager
     @State private var selectedResultIndex = 0
     @State private var isShowingRecords = false
     @State private var results: [DiagnosisResult]? = nil
@@ -16,10 +17,10 @@ struct ResultView: View {
     @State private var showFinalResults = false
     @State private var shouldTriggerFadeOut = false
     @State private var fadeOut = false
-
+    
     var image: UIImage
     var model: String
-
+    
     var body: some View {
         let screenWidth = UIScreen.main.bounds.width
         let contentWidth = screenWidth - 32 * 2
@@ -27,7 +28,7 @@ struct ResultView: View {
         let boxHeightConfidenceModel: CGFloat = 78
         let spacingAdjustment: CGFloat = 0
         let smallBoxWidth = (screenWidth - 32 * 2 - 20) / 2
-
+        
         ZStack {
             Color.black.ignoresSafeArea()
             LinearGradient(gradient: Gradient(colors: [
@@ -35,9 +36,9 @@ struct ResultView: View {
                 Color(hex: "0D7377").opacity(0.0)
             ]), startPoint: .top, endPoint: .bottom)
             .ignoresSafeArea()
-
+            
             VStack(spacing: 20) {
-                // **顶部按钮栏**
+                // Top Buttons
                 HStack {
                     Button(action: {
                         dismiss()
@@ -53,15 +54,15 @@ struct ResultView: View {
                         }
                     }
                     .buttonStyle(.borderless)
-
+                    
                     Spacer()
-
+                    
                     Text("Result")
                         .foregroundColor(.white)
                         .font(.system(size: 23, weight: .semibold))
-
+                    
                     Spacer()
-
+                    
                     Button(action: {
                         isShowingRecords = true
                     }) {
@@ -83,7 +84,7 @@ struct ResultView: View {
                 }
                 .padding(.horizontal, 32)
                 .padding(.top, 5)
-
+                
                 ZStack {
                     // Image Uploaded
                     Image(uiImage: image)
@@ -92,7 +93,7 @@ struct ResultView: View {
                         .frame(width: contentWidth, height: contentWidth)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .contentShape(Rectangle())
-
+                    
                     // Black Cover
                     if results == nil {
                         ZStack {
@@ -100,7 +101,7 @@ struct ResultView: View {
                                 .fill(Color.black)
                                 .frame(width: contentWidth, height: contentWidth)
                                 .opacity(0.8)
-
+                            
                             Text("Just a moment…")
                                 .font(.system(size: 20, weight: .regular))
                                 .foregroundColor(.white)
@@ -112,7 +113,7 @@ struct ResultView: View {
                                 .fill(Color.black)
                                 .frame(width: contentWidth, height: contentWidth)
                                 .opacity(fadeOut ? 0 : 0.8)
-
+                            
                             Text("Just a moment…")
                                 .font(.system(size: 20, weight: .regular))
                                 .foregroundColor(.white)
@@ -136,7 +137,7 @@ struct ResultView: View {
                     fadeInOut = true
                     fetchResults()
                 }
-
+                
                 // Result
                 if let results = results, showFinalResults {
                     VStack {
@@ -147,18 +148,18 @@ struct ResultView: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .fill(Color.white.opacity(0.15))
                                         .frame(height: 175)
-
+                                    
                                     VStack(alignment: .leading, spacing: 0) {
                                         Text("Oops!")
                                             .font(.system(size: 30, weight: .semibold))
                                             .foregroundColor(.white)
-
+                                        
                                         Text("No matching conditions found.")
                                             .font(.system(size: 18, weight: .semibold))
                                             .foregroundColor(.white.opacity(0.7))
-
+                                        
                                         Spacer().frame(height: 21)
-
+                                        
                                         Text("Our model may not support this condition yet. If you’re concerned, consider consulting a dermatologist.")
                                             .font(.system(size: 16, weight: .regular))
                                             .foregroundColor(.white.opacity(0.5))
@@ -169,7 +170,7 @@ struct ResultView: View {
                                 .frame(maxWidth: .infinity)
                                 .transition(.opacity)
                                 .animation(.easeIn(duration: 0.5), value: showFinalResults)
-
+                                
                                 Button(action: {
                                     dismiss()
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -218,7 +219,7 @@ struct ResultView: View {
                                         }
                                     }
                                     .padding(.bottom, -4)
-
+                                    
                                     GeometryReader { geometry in
                                         RoundedRectangle(cornerRadius: 100)
                                             .fill(Color.white)
@@ -229,7 +230,7 @@ struct ResultView: View {
                                     .frame(height: 3)
                                 }
                                 .padding(.horizontal, 32)
-
+                                
                                 DiagnosisResultView(
                                     result: results[selectedResultIndex],
                                     model: model,
@@ -249,16 +250,16 @@ struct ResultView: View {
             .toolbar(.hidden, for: .navigationBar)
         }
     }
-
+    
     func fetchResults() {
         DispatchQueue.global(qos: .userInitiated).async {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.results = [
                     DiagnosisResult(type: "Melanoma", status: "", confidence: 0.73),
                     /*
-                    DiagnosisResult(type: "Melanoma", status: "Malignant", confidence: 0.73),
-                    DiagnosisResult(type: "Basal Cell Carcinoma", status: "", confidence: 0.65),
-                    DiagnosisResult(type: "Actinic Keratosis", status: "Benign", confidence: 0.68)
+                     DiagnosisResult(type: "Melanoma", status: "Malignant", confidence: 0.73),
+                     DiagnosisResult(type: "Basal Cell Carcinoma", status: "", confidence: 0.65),
+                     DiagnosisResult(type: "Actinic Keratosis", status: "Benign", confidence: 0.68)
                      */
                 ]
                 self.shouldTriggerFadeOut = true
@@ -278,17 +279,18 @@ func getIndicatorOffset(results: [DiagnosisResult], selectedIndex: Int) -> CGFlo
 }
 
 struct DiagnosisResultView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
     var result: DiagnosisResult
     var model: String
     var boxHeightType: CGFloat
     var boxHeightConfidenceModel: CGFloat
     var spacingAdjustment: CGFloat
     var smallBoxWidth: CGFloat
-
+    
     var body: some View {
         VStack(spacing: 20) {
             Button(action: {
-                // To Disease Introduction Page
+                navigationManager.path.append(result.type)
             }) {
                 HStack {
                     VStack(alignment: .leading, spacing: spacingAdjustment) {
@@ -296,12 +298,12 @@ struct DiagnosisResultView: View {
                             .foregroundColor(.white.opacity(0.7))
                             .font(.system(size: 18, weight: .semibold))
                             .padding(.leading, 0)
-
+                        
                         HStack {
                             Text(result.type)
                                 .foregroundColor(.white)
                                 .font(.system(size: 30, weight: .semibold))
-
+                            
                             if let status = result.status, !status.isEmpty {
                                 Text(status)
                                     .font(.system(size: 17, weight: .medium))
@@ -320,7 +322,7 @@ struct DiagnosisResultView: View {
                         .padding(.leading, 0)
                     }
                     Spacer()
-
+                    
                     Image("back")
                         .resizable()
                         .renderingMode(.template)
@@ -335,7 +337,7 @@ struct DiagnosisResultView: View {
                 .cornerRadius(10)
             }
             .buttonStyle(.borderless)
-
+            
             HStack(spacing: 20) {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Confidence")
@@ -349,7 +351,7 @@ struct DiagnosisResultView: View {
                 .frame(width: smallBoxWidth, height: boxHeightConfidenceModel, alignment: .leading)
                 .background(Color.white.opacity(0.15))
                 .cornerRadius(10)
-
+                
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Model")
                         .foregroundColor(.white.opacity(0.7))
@@ -365,10 +367,10 @@ struct DiagnosisResultView: View {
             }
             
             Text("This is not a medical diagnosis. Consult a doctor for professional evaluation.")
-                            .foregroundColor(.white.opacity(0.4))
-                            .font(.system(size: 17, weight: .regular))
-                            .padding(.top, -5)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(.white.opacity(0.4))
+                .font(.system(size: 17, weight: .regular))
+                .padding(.top, -5)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, 32)
     }
@@ -383,31 +385,31 @@ struct DiagnosisResult {
 // Preview
 
 /*
-#Preview {
-    ResultView(
-        image: UIImage(named: "sample")!,
-        model: "1.0",
-        results: []
-    )
-}
+ #Preview {
+ ResultView(
+ image: UIImage(named: "Melanoma")!,
+ model: "1.0",
+ results: []
+ )
+ }
  */
 
 /*
  #Preview {
  ResultView(
-     image: UIImage(named: "sample")!,
-     model: "1.0",
-     results: [
-     DiagnosisResult(type: "Melanoma", status: "Malignant", confidence: 0.73)
-     ]
+ image: UIImage(named: "Melanoma")!,
+ model: "1.0",
+ results: [
+ DiagnosisResult(type: "Melanoma", status: "Malignant", confidence: 0.73)
+ ]
  )
  }
-*/
+ */
 
 /*
  #Preview {
  ResultView(
- image: UIImage(named: "sample")!,
+ image: UIImage(named: "Melanoma")!,
  model: "1.0",
  results: [
  DiagnosisResult(type: "Melanoma", status: "Malignant", confidence: 0.73),
@@ -416,8 +418,8 @@ struct DiagnosisResult {
  ]
  )
  }
-*/
+ */
 
 #Preview {
-    ResultView(image: UIImage(named: "sample")!, model: "1.0")
+    ResultView(image: UIImage(named: "Melanoma")!, model: "1.0")
 }

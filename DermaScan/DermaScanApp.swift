@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct DermaScanApp: App {
+    @StateObject var navigationManager = NavigationManager()
+    
     var body: some Scene {
         WindowGroup {
             HomeView()
+                .environmentObject(navigationManager)
         }
     }
 }
