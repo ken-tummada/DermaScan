@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7502F3D62D7BC78B001C3D26 /* disease_info.csv in Resources */ = {isa = PBXBuildFile; fileRef = 7502F3D52D7BC78B001C3D26 /* disease_info.csv */; };
+		7502F3D92D7BCAFC001C3D26 /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = 7502F3D82D7BCAFC001C3D26 /* SwiftCSV */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7502F3D92D7BCAFC001C3D26 /* SwiftCSV in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +122,7 @@
 			);
 			name = DermaScan;
 			packageProductDependencies = (
+				7502F3D82D7BCAFC001C3D26 /* SwiftCSV */,
 			);
 			productName = DermaScan;
 			productReference = 75523DBE2D77872D00A02EEE /* DermaScan.app */;
@@ -203,6 +206,9 @@
 			);
 			mainGroup = 75523DB52D77872D00A02EEE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7502F3D72D7BCAFC001C3D26 /* XCRemoteSwiftPackageReference "SwiftCSV" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 75523DBF2D77872D00A02EEE /* Products */;
 			projectDirPath = "";
@@ -593,6 +599,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7502F3D72D7BCAFC001C3D26 /* XCRemoteSwiftPackageReference "SwiftCSV" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/naoty/SwiftCSV";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7502F3D82D7BCAFC001C3D26 /* SwiftCSV */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7502F3D72D7BCAFC001C3D26 /* XCRemoteSwiftPackageReference "SwiftCSV" */;
+			productName = SwiftCSV;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 75523DB62D77872D00A02EEE /* Project object */;
 }

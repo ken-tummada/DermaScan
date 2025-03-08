@@ -1,0 +1,15 @@
+{
+  "originHash" : "de51adfa0b24ce14abb33153ed910d41a91f1041e8990dc4eeacbf20d43f4a5d",
+  "pins" : [
+    {
+      "identity" : "swiftcsv",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/naoty/SwiftCSV",
+      "state" : {
+        "revision" : "6ab5d0fe9b6ef3c79d717eefa70862df389e74d9",
+        "version" : "0.10.0"
+      }
+    }
+  ],
+  "version" : 3
+}
