@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7502F3D62D7BC78B001C3D26 /* disease_info.csv in Resources */ = {isa = PBXBuildFile; fileRef = 7502F3D52D7BC78B001C3D26 /* disease_info.csv */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		75523DCF2D77872E00A02EEE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7502F3D52D7BC78B001C3D26 /* disease_info.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = disease_info.csv; sourceTree = "<group>"; };
 		751AB4D82D7829B2002AEA6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75523DBE2D77872D00A02EEE /* DermaScan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DermaScan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75523DCE2D77872E00A02EEE /* DermaScanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DermaScanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +81,7 @@
 		75523DB52D77872D00A02EEE = {
 			isa = PBXGroup;
 			children = (
+				7502F3D52D7BC78B001C3D26 /* disease_info.csv */,
 				75523DC02D77872D00A02EEE /* DermaScan */,
 				75523DD12D77872E00A02EEE /* DermaScanTests */,
 				75523DDB2D77872F00A02EEE /* DermaScanUITests */,
@@ -214,6 +220,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7502F3D62D7BC78B001C3D26 /* disease_info.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
