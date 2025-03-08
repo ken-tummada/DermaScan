@@ -77,7 +77,7 @@ struct ResultView: View {
                     }
                     .buttonStyle(.borderless)
                 }
-                .sheet(isPresented: $isShowingRecords) {
+                .blurredSheet(.init(.ultraThinMaterial), show: $isShowingRecords) {
                     RecordsView()
                         .presentationDetents([.medium, .large])
                         .presentationDragIndicator(.visible)

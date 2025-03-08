@@ -53,7 +53,8 @@ struct IntroductionView: View {
                                 .init(color: backgroundColor.opacity(0), location: 0),
                                 .init(color: backgroundColor.opacity(1), location: 1)
                             ]),
-                            startPoint: .top, endPoint: .bottom
+                            startPoint: UnitPoint(x: 0, y: 0),
+                            endPoint: UnitPoint(x: 0, y: 0.9)
                         )
                         .overlay(
                             LinearGradient(
@@ -61,13 +62,14 @@ struct IntroductionView: View {
                                     .init(color: Color.black.opacity(0), location: 0),
                                     .init(color: Color.black.opacity(0.2), location: 1)
                                 ]),
-                                startPoint: .top, endPoint: .bottom
+                                startPoint: UnitPoint(x: 0, y: 0),
+                                endPoint: UnitPoint(x: 0, y: 0.9)
                             )
                         )
                         .frame(height: 135)
                     }
                     .frame(width: screenWidth, height: imageHeight)
-                    .offset(y: 20 + 1)
+                    .offset(y: 25)
                     
                     // Page Title
                     VStack(alignment: .leading, spacing: 0) {
@@ -130,7 +132,7 @@ struct IntroductionView: View {
                     }
                 }
                 .buttonStyle(.borderless)
-                .sheet(isPresented: $isShowingRecords) {
+                .blurredSheet(.init(.ultraThinMaterial), show: $isShowingRecords) {
                     RecordsView()
                         .presentationDetents([.medium, .large])
                         .presentationDragIndicator(.visible)

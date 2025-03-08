@@ -151,7 +151,7 @@ struct HomeView: View {
                     }
                 }
             }
-            .sheet(isPresented: $isShowingRecords) {
+            .blurredSheet(.init(.ultraThinMaterial), show: $isShowingRecords) {
                 RecordsView()
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)

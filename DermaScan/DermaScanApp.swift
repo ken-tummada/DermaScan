@@ -15,6 +15,7 @@ struct DermaScanApp: App {
         WindowGroup {
             HomeView()
                 .environmentObject(navigationManager)
+                .preferredColorScheme(.dark)
         }
     }
 }

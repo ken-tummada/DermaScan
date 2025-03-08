@@ -10,9 +10,6 @@ import SwiftUI
 struct RecordsView: View {
     var body: some View {
         ZStack {
-            Color(hex: "303134")
-                .ignoresSafeArea()
-            
             VStack {
                 ZStack {
                     Text("Records")
