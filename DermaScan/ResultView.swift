@@ -7,6 +7,17 @@
 
 import SwiftUI
 
+
+struct GetResultDataJSON: Decodable {
+    let type: String
+    let status: String
+    let confidence: Double
+}
+
+struct GetResultBody: Codable {
+    let image: String
+}
+
 struct ResultView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var navigationManager: NavigationManager
@@ -258,24 +269,54 @@ struct ResultView: View {
     }
     
     func fetchResults() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.results = [
-                    DiagnosisResult(type: "Melanoma", status: "", confidence: 0.73),
-                    /*
-                     DiagnosisResult(type: "Melanoma", status: "Malignant", confidence: 0.73),
-                     DiagnosisResult(type: "Basal Cell Carcinoma", status: "", confidence: 0.65),
-                     DiagnosisResult(type: "Actinic Keratosis", status: "Benign", confidence: 0.68)
-                     */
-                ]
-                self.shouldTriggerFadeOut = true
-                
+        let compressionRate = 0.8
+        
+        guard let imageData = image.jpegData(compressionQuality: compressionRate) else {
+            // Handle error if unable to convert image to data
+            return
+        }
+        
+        let rawImageData = imageData.base64EncodedString()
+        
+        let APIEndpoint = "http://localhost:9000/2015-03-31/functions/function/invocations"
+
+        var request = URLRequest(url: URL(string: APIEndpoint)!)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        
+        do {
+            request.httpBody = try JSONEncoder().encode(GetResultBody(image: rawImageData))
+        } catch {
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { rawData, response, error in
+            if let error = error {
+                // Change later
+                print("Error: \(error.localizedDescription)")
+                        return
+            }
+                    
+            if let rawData = rawData {
+                do {
+                    let resultData = try JSONDecoder().decode(GetResultDataJSON.self, from: rawData)
+                    self.results = [
+                        DiagnosisResult(type: resultData.type, status: resultData.status, confidence: resultData.confidence),
+                    ]
+                } catch {
+                    print("JSON Decoding Error: \(error)")
+                }
+                        
                 if !hasSaved {
                     saveResults()
                     hasSaved = true
                 }
             }
         }
+        
+        task.resume()
+        self.shouldTriggerFadeOut = true
     }
     
     func saveResults() {
