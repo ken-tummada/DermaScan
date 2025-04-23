@@ -6,15 +6,12 @@ from sklearn.preprocessing import label_binarize
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 
-# === Paths ===
 base_dir = r"D:\Project\Tumor"
 val_dir = os.path.join(base_dir, "val") 
 model_path = os.path.join(base_dir, "tumor_classifier.h5")
 
-# === Load model ===
 model = load_model(model_path)
 
-# === Load validation data ===
 img_size = (224, 224)
 val_datagen = ImageDataGenerator(rescale=1./255)
 
@@ -26,15 +23,12 @@ val_generator = val_datagen.flow_from_directory(
     shuffle=False
 )
 
-# === Class names from generator ===
 class_names = list(val_generator.class_indices.keys())
 
-# === Predict ===
 y_true = val_generator.classes
 y_prob = model.predict(val_generator, verbose=1)
 y_true_onehot = label_binarize(y_true, classes=list(range(len(class_names))))
 
-# === ROC Plot ===
 plt.figure(figsize=(10, 8))
 
 for i in range(len(class_names)):

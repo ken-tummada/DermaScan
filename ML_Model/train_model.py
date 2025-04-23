@@ -22,7 +22,6 @@ def main():
     if not os.path.exists(train_dir) or not os.path.exists(val_dir):
         raise FileNotFoundError("Train or validation directory not found.")
 
-    # === Data Generators ===
     train_datagen = ImageDataGenerator(
         rescale=1./255,
         rotation_range=40,
@@ -51,7 +50,6 @@ def main():
         shuffle=False
     )
 
-    # === Compute class weights ===
     labels = train_generator.classes
     class_weights = compute_class_weight(
         class_weight='balanced',
@@ -60,7 +58,6 @@ def main():
     )
     class_weights = dict(enumerate(class_weights))
 
-    # === Load Base Model ===
     base_model = MobileNetV2(input_shape=(224, 224, 3), include_top=False, weights='imagenet')
 
     for layer in base_model.layers[:80]:
@@ -68,7 +65,6 @@ def main():
     for layer in base_model.layers[80:]:
         layer.trainable = True
 
-    # === Build New Model Head ===
     model = models.Sequential([
         base_model,
         layers.GlobalAveragePooling2D(),
@@ -81,7 +77,6 @@ def main():
         layers.Dense(train_generator.num_classes, activation='softmax')
     ])
 
-    # === Compile (initial training) ===
     model.compile(
         optimizer=optimizers.Adam(learning_rate=1e-4),
         loss='categorical_crossentropy',
@@ -101,7 +96,6 @@ def main():
         class_weight=class_weights
     )
 
-    # === Fine-Tuning Entire Model (with learning rate schedule) ===
     cosine_decay = tf.keras.optimizers.schedules.CosineDecay(
         initial_learning_rate=1e-4,
         decay_steps=fine_tune_epochs * len(train_generator),
@@ -121,11 +115,9 @@ def main():
         class_weight=class_weights
     )
 
-    # === Save Final Model ===
     model.save(model_path)
     print(f"\nModel saved to: {model_path}")
 
-    # === Plot Accuracy ===
     acc = history.history['accuracy'] + fine_tune_history.history['accuracy']
     val_acc = history.history['val_accuracy'] + fine_tune_history.history['val_accuracy']
 
