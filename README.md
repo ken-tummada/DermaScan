@@ -1,9 +1,5 @@
 # DermaScan: A Cloud-Powered Deep Learning iOS App for Multi-Class Skin Tumor Classification
 
-**Zihan D., Jasper L., Ken T., Ella Y.**
-
-&nbsp;
-
 ### Objective
 
 Bringing hospital-only skin screening tools to mobile devices to monitor conditions anytime, anywhere.
