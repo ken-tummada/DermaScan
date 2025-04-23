@@ -23,6 +23,8 @@ FastAPI receives images and returns predictions using exported TensorFlow models
 **Step 5 · Deployment & Integration**  
 Backend deployed via AWS Lambda and CDK; app connects via RESTful API.
 
+![image](https://github.com/user-attachments/assets/2fad0d1a-9b9e-4112-8a06-7673e350265a)
+
 &nbsp;
 
 ### Methodology
