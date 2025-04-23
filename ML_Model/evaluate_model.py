@@ -10,7 +10,7 @@ from tensorflow.keras.models import load_model
 # Paths
 base_dir = r"D:\Project\Tumor"
 val_dir = os.path.join(base_dir, "val")
-model_path = os.path.join(base_dir, "tumor_classifier.h5")
+model_path = os.path.join(base_dir,"tumor_classifier.h5")
 
 # Parameters
 img_size = (224, 224)
