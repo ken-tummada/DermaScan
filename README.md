@@ -1,12 +1,14 @@
-# DermaScan
-
-## A Cloud-Powered Deep Learning iOS App for Multi-Class Skin Tumor Classification
+# DermaScan: A Cloud-Powered Deep Learning iOS App for Multi-Class Skin Tumor Classification
 
 **Zihan D., Jasper L., Ken T., Ella Y.**
+
+&nbsp;
 
 ### Objective
 
 Bringing hospital-only skin screening tools to mobile devices to monitor conditions anytime, anywhere.
+
+&nbsp;
 
 ### Approach
 
@@ -25,6 +27,8 @@ FastAPI receives images and returns predictions using exported TensorFlow models
 **Step 5 · Deployment & Integration**  
 Backend deployed via AWS Lambda and CDK; app connects via RESTful API.
 
+&nbsp;
+
 ### Methodology
 
 **Model & Training**  
@@ -36,6 +40,8 @@ To handle class imbalance, class weights were computed using the balanced mode o
 **Regularization & Optimization**  
 30%-40% Dropout and batch normalization were applied between dense layers to reduce overfitting. The model was trained using categorical cross-entropy loss and the Adam optimizer, with cosine decay in the fine-tuning phase. Validation performance-guided checkpointing.
 
+&nbsp;
+
 ### Results & Conclusion
 
 Our MobileNetV2 model achieved strong performance, with a mean AUC of 0.946 and overall accuracy of 91.4%. VASC showed perfect AUC (1.00), and NV had the highest true positives (1,741). Despite class imbalance, class-weighting and augmentation helped maintain a mean specificity of 0.948 and sensitivity of 67.8%.
@@ -43,6 +49,23 @@ Our MobileNetV2 model achieved strong performance, with a mean AUC of 0.946 and 
 We developed a lightweight deep learning model for skin lesion classification and successfully deployed it in a fully integrated mobile app. Users can capture skin images, receive classification results in real-time, and access detailed medical context for each prediction.
 
 The entire pipeline is now operational and scalable, offering a foundation for mobile-based skin screening in remote or underserved areas.
+
+&nbsp;
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e8f0feea-cb03-4345-92a6-a555cafcbe4d" width="40%" />
+  <img src="https://github.com/user-attachments/assets/4e371eef-6ced-4c23-947b-2ba85b0082a7" width="40%" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/05c234ce-e07a-4bc1-ab27-559f68914c2a" width="90%" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1d6928a2-ee81-4434-8558-195cfa3d3bee" width="70%" />
+</p>
+
+&nbsp;
 
 ### Supported Conditions & Dataset Information
 
@@ -63,6 +86,8 @@ The training data for our model comes from the **International Skin Imaging Coll
 
 - [ISIC 2018 Data](https://challenge.isic-archive.com/data/#2018)
 - [ISIC 2019 Data](https://challenge.isic-archive.com/data/#2019)
+
+&nbsp;
 
 ### Citation
 
