@@ -1,0 +1,50 @@
+{
+    "AK": {
+        "name": "Actinic keratosis",
+        "severity": "Precancerous",
+        "description": "An actinic keratosis is a rough, scaly patch on the skin that develops from years of sun exposure. It's often found on the face, lips, ears, forearms, scalp, neck or back of the hands. You can reduce your risk of this skin condition by minimizing your sun exposure and protecting your skin from ultraviolet (UV) rays. Left untreated, the risk of actinic keratoses turning into a type of skin cancer called squamous cell carcinoma is about 5% to 10%.",
+        "description-source": "https://www.mayoclinic.org/diseases-conditions/actinic-keratosis/symptoms-causes/syc-20354969"
+    },
+    "BCC": {
+        "name": "Basal cell carcinoma",
+        "severity": "Cancerous",
+        "description": "Basal cell carcinoma is a type of skin cancer. Basal cell carcinoma begins in the basal cells — a type of cell within the skin that produces new skin cells as old ones die off. Basal cell carcinoma often appears as a slightly transparent bump on the skin, though it can take other forms. Basal cell carcinoma occurs most often on areas of the skin that are exposed to the sun, such as your head and neck.",
+        "description-source": "https://www.mayoclinic.org/diseases-conditions/basal-cell-carcinoma/symptoms-causes/syc-20354187"
+    },
+    "BKL": {
+        "name": "Seborrheic keratosis",
+        "severity": "Noncancerous",
+        "description": "A seborrheic keratosis is a common noncancerous (benign) skin growth. People tend to get more of them as they get older. Seborrheic keratoses are usually brown, black or light tan. The growths (lesions) look waxy or scaly and slightly raised. They appear gradually, usually on the face, neck, chest or back.",
+        "description-source": "https://www.mayoclinic.org/diseases-conditions/seborrheic-keratosis/symptoms-causes/syc-20353878"
+    },
+    "DF": {
+        "name": "Dermatofibroma",
+        "severity": "Noncancerous",
+        "description": "Dermatofibromas are small, noncancerous (benign) skin growths that can develop anywhere on the body but most often appear on the lower legs, upper arms or upper back. These nodules are common in adults but are rare in children. They can be pink, gray, red, or brown in color and may change color over the years. They are firm and often feel like a stone under the skin. When pinched from the sides, the top of the growth may dimple inward.",
+        "description-source": "https://www.health.harvard.edu/a_to_z/dermatofibroma-a-to-z"
+    },
+    "MEL": {
+        "name": "Melanoma",
+        "severity": "Cancerous",
+        "description": "Melanoma is a kind of skin cancer that starts in the melanocytes. Melanocytes are cells that make the pigment that gives skin its color. The pigment is called melanin. Melanoma typically starts on skin that's often exposed to the sun. This includes the skin on the arms, back, face and legs. Melanoma also can form in the eyes. Rarely, it can happen inside the body, such as in the nose or throat.",
+        "description-source": "https://www.mayoclinic.org/diseases-conditions/melanoma/symptoms-causes/syc-20374884"
+    },
+    "NV": {
+        "name": "Melanocytic Nevi (mole)",
+        "severity": "Noncancerous",
+        "description": "Melanocytic nevus is the medical term for a mole. Nevi can appear anywhere on the body. They are benign (non-cancerous) and typically do not require treatment. A very small percentage of melanocytic nevi may develop a melanoma within them. Of note, the majority of cutaneous melanomas arise within normally appearing skin.",
+        "description-source": "https://www.yalemedicine.org/conditions/melanocytic-nevi-moles"
+    },
+    "SCC": {
+        "name": "Squamous cell carcinoma",
+        "severity": "Cancerous",
+        "description": "Squamous cell carcinoma of the skin is a type of cancer that starts as a growth of cells on the skin. It starts in cells called squamous cells. The squamous cells make up the middle and outer layers of the skin. Squamous cell carcinoma is a common type of skin cancer.",
+        "description-source": "https://www.mayoclinic.org/diseases-conditions/squamous-cell-carcinoma/symptoms-causes/syc-20352480"
+    },
+    "VASC": {
+        "name": "Vascular lesion",
+        "severity": "n/a",
+        "description": "Vascular lesions are abnormal growths or malformations in the blood vessels, which can occur in various parts of the body. They can be congenital or acquired and may result from injury, infection, or other underlying medical conditions. Vascular lesions can range from harmless to potentially life-threatening, depending on their location and severity.",
+        "description-source": "https://www.yalemedicine.org/clinical-keywords/vascular-lesions"
+    }
+}
