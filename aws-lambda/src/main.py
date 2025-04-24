@@ -52,10 +52,6 @@ def lambda_handler(event, context):
         (disease_info, confidence) = predict_single_image(image_bin)
         
     except Exception as e:
-        with open("test.log", "w+") as log:
-            log.write(f"Error occured: {e}\n")
-            log.write(traceback.format_exc() + "\n")
-            
         return {
             "statusCode": 500,
             "headers": {
@@ -63,9 +59,6 @@ def lambda_handler(event, context):
             },
             "body": str(e)
         }
-        
-    with open("test.log", "w+") as log:
-        log.write(str(type(confidence)))
     
     return {
         "type": disease_info["name"],

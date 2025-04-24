@@ -10,7 +10,7 @@ import SwiftUI
 
 struct GetResultDataJSON: Decodable {
     let type: String
-    let status: String
+    let severity: String
     let confidence: Double
 }
 
@@ -278,18 +278,16 @@ struct ResultView: View {
         
         let rawImageData = imageData.base64EncodedString()
         
-        let APIEndpoint = "http://localhost:9000/2015-03-31/functions/function/invocations"
+//        let MockAPIEndpoint = "http://localhost:9000/2015-03-31/functions/function/invocations"
+        
+        let APIEndpoint = "https://4d2a66wusqqctth6rtgbns24yy0pixpa.lambda-url.us-west-1.on.aws/ "
+        
 
         var request = URLRequest(url: URL(string: APIEndpoint)!)
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("text/plain", forHTTPHeaderField: "Content-Type")
         
-        
-        do {
-            request.httpBody = try JSONEncoder().encode(GetResultBody(image: rawImageData))
-        } catch {
-            return
-        }
+        request.httpBody = rawImageData.data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: request) { rawData, response, error in
             if let error = error {
@@ -302,7 +300,7 @@ struct ResultView: View {
                 do {
                     let resultData = try JSONDecoder().decode(GetResultDataJSON.self, from: rawData)
                     self.results = [
-                        DiagnosisResult(type: resultData.type, status: resultData.status, confidence: resultData.confidence),
+                        DiagnosisResult(type: resultData.type, severity: resultData.severity, confidence: resultData.confidence),
                     ]
                 } catch {
                     print("JSON Decoding Error: \(error)")
@@ -460,32 +458,27 @@ struct DiagnosisResultView: View {
             }) {
                 HStack {
                     VStack(alignment: .leading, spacing: spacingAdjustment) {
-                        Text("Type")
+                        Text("Condition")
                             .foregroundColor(.white.opacity(0.7))
                             .font(.system(size: 18, weight: .semibold))
                             .padding(.leading, 0)
                         
-                        HStack {
                             Text(result.type)
                                 .foregroundColor(.white)
                                 .font(.system(size: 30, weight: .semibold))
                             
-                            if let status = result.status, !status.isEmpty {
-                                Text(status)
+                                Text(result.severity)
                                     .font(.system(size: 17, weight: .medium))
-                                    .foregroundColor(status == "Malignant" ? Color(hex: "F37878") : Color(hex: "87C100"))
+                                    .foregroundColor(result.severity == "Cancerous" ? Color(hex: "F37878") : Color(hex: "87C100"))
                                     .padding(.horizontal, 12)
                                     .frame(height: 25)
                                     .background(
                                         ZStack {
                                             Color.black.opacity(0.5)
-                                            (status == "Malignant" ? Color(hex: "F37878") : Color(hex: "87C100")).opacity(0.15)
+                                            (result.severity == "Cancerous" ? Color(hex: "F37878") : Color(hex: "87C100")).opacity(0.15)
                                         }
                                     )
                                     .clipShape(Capsule())
-                            }
-                        }
-                        .padding(.leading, 0)
                     }
                     Spacer()
                     
@@ -498,7 +491,7 @@ struct DiagnosisResultView: View {
                         .frame(maxHeight: .infinity, alignment: .center)
                 }
                 .padding(19)
-                .frame(height: boxHeightType)
+                .frame(height: (boxHeightType + 36))
                 .background(Color.white.opacity(0.15))
                 .cornerRadius(10)
             }
@@ -544,7 +537,7 @@ struct DiagnosisResultView: View {
 
 struct DiagnosisResult {
     var type: String
-    var status: String?
+    var severity: String
     var confidence: Double
 }
 
