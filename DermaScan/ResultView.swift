@@ -456,42 +456,31 @@ struct DiagnosisResultView: View {
             Button(action: {
                 navigationManager.path.append(result.type)
             }) {
-                HStack {
-                    VStack(alignment: .leading, spacing: spacingAdjustment) {
+                HStack(alignment: .center) {
+                    VStack(alignment: .leading, spacing: 6) {
                         Text("Condition")
                             .foregroundColor(.white.opacity(0.7))
                             .font(.system(size: 18, weight: .semibold))
-                            .padding(.leading, 0)
-                        
-                            Text(result.type)
-                                .foregroundColor(.white)
-                                .font(.system(size: 30, weight: .semibold))
-                            
-                                Text(result.severity)
-                                    .font(.system(size: 17, weight: .medium))
-                                    .foregroundColor(result.severity == "Cancerous" ? Color(hex: "F37878") : Color(hex: "87C100"))
-                                    .padding(.horizontal, 12)
-                                    .frame(height: 25)
-                                    .background(
-                                        ZStack {
-                                            Color.black.opacity(0.5)
-                                            (result.severity == "Cancerous" ? Color(hex: "F37878") : Color(hex: "87C100")).opacity(0.15)
-                                        }
-                                    )
-                                    .clipShape(Capsule())
+
+                        Text(result.type)
+                            .foregroundColor(.white)
+                            .font(.system(size: 30, weight: .semibold))
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(nil)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
+
                     Spacer()
-                    
+
                     Image("back")
                         .resizable()
                         .renderingMode(.template)
                         .frame(width: 12, height: 21)
                         .rotationEffect(.degrees(180))
                         .foregroundColor(.white.opacity(0.5))
-                        .frame(maxHeight: .infinity, alignment: .center)
                 }
                 .padding(19)
-                .frame(height: (boxHeightType + 36))
+                .frame(minHeight: boxHeightType)
                 .background(Color.white.opacity(0.15))
                 .cornerRadius(10)
             }
@@ -512,12 +501,23 @@ struct DiagnosisResultView: View {
                 .cornerRadius(10)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Model")
+                    Text("Severity")
                         .foregroundColor(.white.opacity(0.7))
                         .font(.system(size: 17, weight: .semibold))
-                    Text(model)
-                        .foregroundColor(.white)
-                        .font(.system(size: 25, weight: .medium))
+                    
+                    Text(
+                        result.severity == "Cancerous" ? "Malignant" :
+                        result.severity == "Precancerous" ? "At Risk" :
+                        result.severity == "Non-cancerous" ? "Benign" :
+                        result.severity
+                    )
+                    .foregroundColor(
+                        result.severity == "Cancerous" ? Color(hex: "F37878") :
+                        result.severity == "Precancerous" ? Color(hex: "FFB545") :
+                        result.severity == "Non-cancerous" ? Color(hex: "87C100") :
+                        .white
+                    )
+                    .font(.system(size: 25, weight: .medium))
                 }
                 .padding(19)
                 .frame(width: smallBoxWidth, height: boxHeightConfidenceModel, alignment: .leading)
