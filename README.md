@@ -1,4 +1,4 @@
-# DermaScan: A Cloud-Powered Deep Learning iOS App for Multi-Class Skin Tumor Classification
+# DermaScan: A Skin Condition Classifier App for iOS, powered by Deep Learning.
 
 ### Objective
 
@@ -12,16 +12,13 @@ Bringing hospital-only skin screening tools to mobile devices to monitor conditi
 Trained MobileNetV2 on a dermoscopic dataset using TensorFlow and Keras frameworks for image classification.
 
 **Step 2 · UI Design in Figma**  
-Designed image upload, result, disease info, and records pages in Figma to guide frontend.
+Designed image upload, result, disease info, and records pages in Figma to guide the frontend.
 
 **Step 3 · iOS Frontend Implementation**  
 Built in SwiftUI, supporting image input and real-time result rendering.
 
-**Step 4 · Backend API Construction**  
-FastAPI receives images and returns predictions using exported TensorFlow models.
-
-**Step 5 · Deployment & Integration**  
-Backend deployed via AWS Lambda and CDK; app connects via RESTful API.
+**Step 4 · Backend & Deployment**  
+We are using AWS Lambda to host and allow our frontend to interact with our trained models.
 
 &nbsp;
 
