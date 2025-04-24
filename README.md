@@ -26,7 +26,7 @@ Backend deployed via AWS Lambda and CDK; app connects via RESTful API.
 &nbsp;
 
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/88b6b307-e0ce-4520-927e-8b0b0752dd6b" width="30%" />
+  <img src="https://github.com/user-attachments/assets/1c730969-4e09-4d37-97db-036a04c6b87f" width="30%" />
 </p>
 
 &nbsp;
