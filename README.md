@@ -1,4 +1,4 @@
-# DermaScan: A Skin Condition Classifier App for iOS, powered by Deep Learning.
+# DermaScan: A Skin Condition Classifier App for iOS, powered by Deep Learning
 
 ### Objective
 
@@ -18,7 +18,7 @@ Designed image upload, result, disease info, and records pages in Figma to guide
 Built in SwiftUI, supporting image input and real-time result rendering.
 
 **Step 4 · Backend & Deployment**  
-We are using AWS Lambda to host and allow our frontend to interact with our trained models.
+Hosted trained models on AWS Lambda to support real-time interaction with the iOS frontend.
 
 &nbsp;
 
