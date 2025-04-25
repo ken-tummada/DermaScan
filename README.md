@@ -42,8 +42,8 @@ Hosted trained models on AWS Lambda to support real-time interaction with the iO
   - Trained for 30 epochs with early stopping & checkpointing
 
 **Augmentation & Imbalance Handling**  
-- Augmentation: rotation, shift, zoom, shear, brightness, and flipping.  
-- Balanced class weights via `compute_class_weight`.
+- Augmentation: rotation, shift, zoom, shear, brightness, and flipping
+- Balanced class weights via `compute_class_weight`
 
 **Regularization & Optimization**  
 - Dropout (30–40%) + BatchNormalization  
