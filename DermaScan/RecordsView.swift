@@ -168,12 +168,7 @@ struct RecordsView: View {
                 AutoScrollView(maxHeight: availableHeight * 0.75) {
                     VStack(spacing: 20) {
                         ForEach(recordsManager.records.filter { !$0.id.isEmpty }, id: \.id) { record in
-                            Button(action: {
-                                navigationManager.path.append(record)
-                            }) {
-                                recordCard(record: record)
-                            }
-                            .buttonStyle(.borderless)
+                            recordCard(record: record)
                         }
                     }
                     .padding(.top, 10)
@@ -251,15 +246,6 @@ struct RecordsView: View {
                 
                 Spacer()
             }
-            
-            Image("back")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 21)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .rotationEffect(.degrees(180))
-                .opacity(0.5)
-                .padding(.trailing, 15)
         }
         .contentShape(Rectangle())
     }
