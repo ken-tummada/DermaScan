@@ -457,7 +457,7 @@ struct DiagnosisResultView: View {
                 navigationManager.path.append(result.type)
             }) {
                 HStack(alignment: .center) {
-                    VStack(alignment: .leading, spacing: 6) {
+                    VStack(alignment: .leading, spacing: spacingAdjustment) {
                         Text("Condition")
                             .foregroundColor(.white.opacity(0.7))
                             .font(.system(size: 18, weight: .semibold))
