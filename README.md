@@ -1,4 +1,4 @@
-# DermaScan: A Skin Condition Classifier App for iOS, powered by Deep Learning
+# DermaScan: A Skin Condition Classifier App for iOS, Powered by Deep Learning
 
 ### Objective
 
