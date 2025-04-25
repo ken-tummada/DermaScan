@@ -8,7 +8,7 @@ from tensorflow.keras.models import load_model
 
 base_dir = r"D:\Project\Tumor"
 val_dir = os.path.join(base_dir, "val") 
-model_path = os.path.join(base_dir, "tumor_classifier.h5")
+model_path = os.path.join(base_dir, "ML_Model", "tumor_classifier.h5")
 
 model = load_model(model_path)
 
@@ -41,7 +41,7 @@ plt.xlim([0.0, 1.0])
 plt.ylim([0.0, 1.05])
 plt.xlabel('False Positive Rate (FPR)')
 plt.ylabel('True Positive Rate (TPR)')
-plt.title('ROC Curve – Multi-Class')
+plt.title('ROC Curve - Multi-Class')
 plt.legend(loc='lower right')
 plt.tight_layout()
 plt.savefig(os.path.join(base_dir, "roc_curve.png"))
