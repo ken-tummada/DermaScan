@@ -8,16 +8,19 @@ Bringing hospital-only skin screening tools to mobile devices to monitor conditi
 
 ### Approach
 
-**Step 1 · Model Development**  
-Trained MobileNetV2 on a dermoscopic dataset using TensorFlow and Keras frameworks for image classification.
+**1 · Binary Classifier (Skin Detection)**  
+Built a lightweight CNN to filter out non-skin images before lesion classification.
 
-**Step 2 · UI Design in Figma**  
+**2 · Lesion Classifier (Tumor Detection)**  
+Fine-tuned MobileNetV2 with transfer learning to classify dermoscopic images by lesion type.
+
+**3 · UI Design in Figma**  
 Designed image upload, result, disease info, and records pages in Figma to guide the frontend.
 
-**Step 3 · iOS Frontend Implementation**  
+**4 · iOS Frontend Implementation**  
 Built in SwiftUI, supporting image input and real-time result rendering.
 
-**Step 4 · Backend & Deployment**  
+**5 · Backend & Deployment**  
 Hosted trained models on AWS Lambda to support real-time interaction with the iOS frontend.
 
 &nbsp;
@@ -31,23 +34,31 @@ Hosted trained models on AWS Lambda to support real-time interaction with the iO
 ### Methodology
 
 **Model & Training**  
-MobileNetV2, pre-trained on ImageNet, was used as the backbone. A two-phase training process was applied: initial training with frozen base layers and a custom classification head, followed by full-network fine-tuning with a cosine learning rate decay schedule for stable convergence. The head included global average pooling, a 512 → 256 unit dense layer with ReLU, and Softmax output. A total of 30 epochs were used, and early stopping was applied with model checkpointing to retain the best model.
+- Binary Classifier: 2 Conv2D + MaxPooling → GAP → Dense(64, ReLU) → Dropout → Sigmoid  
+- Lesion Classifier (MobileNetV2):  
+  - Phase 1: Train custom head (base frozen)  
+  - Phase 2: Fine-tune full model (cosine LR decay)  
+  - Head: GAP → Dense(512→256, ReLU) → Softmax  
+  - Trained for 30 epochs with early stopping & checkpointing
 
-**Imbalance & Augmentation**  
-To handle class imbalance, class weights were computed using the balanced mode of scikit-learn’s compute_class_weight. To improve generalization, we used real-time data augmentation with random rotation, width/height shifting, zooming, shearing, horizontal flipping, and brightness variation via Keras’ ImageDataGenerator.
+**Augmentation & Imbalance Handling**  
+- Augmentation: rotation, shift, zoom, shear, brightness, and flipping.  
+- Balanced class weights via `compute_class_weight`.
 
 **Regularization & Optimization**  
-30%-40% Dropout and batch normalization were applied between dense layers to reduce overfitting. The model was trained using categorical cross-entropy loss and the Adam optimizer, with cosine decay in the fine-tuning phase. Validation performance-guided checkpointing.
+- Dropout (30–40%) + BatchNormalization  
+- Loss: Categorical cross-entropy  
+- Optimizer: Adam + cosine LR decay
 
 &nbsp;
 
 ### Results & Conclusion
 
-Our MobileNetV2 model achieved strong performance, with a mean AUC of 0.946 and overall accuracy of 91.4%. VASC showed perfect AUC (1.00), and NV had the highest true positives (1,741). Despite class imbalance, class-weighting and augmentation helped maintain a mean specificity of 0.948 and sensitivity of 67.8%.
+Our MobileNetV2 model achieved 91.4% accuracy and 0.946 mean AUC. VASC showed perfect AUC (1.00), and NV had the highest true positives (1,741). Class-weighting and augmentation maintained 0.948 specificity and 67.8% sensitivity.
 
-We developed a lightweight deep learning model for skin lesion classification and successfully deployed it in a fully integrated mobile app. Users can capture skin images, receive classification results in real-time, and access detailed medical context for each prediction.
+Deployed in a lightweight mobile app enabling real-time lesion classification with contextual insights. Fully operational pipeline supports scalable screening in remote/underserved areas.
 
-The entire pipeline is now operational and scalable, offering a foundation for mobile-based skin screening in remote or underserved areas.
+Area for improvement: Improve sensitivity using focal loss and SMOTE, enhance generalization with clinical metadata via multi-input modeling. Model pruning and quantization will optimize mobile performance.
 
 &nbsp;
 
