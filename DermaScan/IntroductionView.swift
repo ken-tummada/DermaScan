@@ -53,7 +53,7 @@ struct IntroductionView: View {
                         LinearGradient(
                             gradient: Gradient(stops: [
                                 .init(color: backgroundColor.opacity(0), location: 0),
-                                .init(color: backgroundColor.opacity(1), location: 1)
+                                .init(color: backgroundColor.opacity(1), location: 0.9)
                             ]),
                             startPoint: UnitPoint(x: 0, y: 0),
                             endPoint: UnitPoint(x: 0, y: 0.9)
@@ -62,13 +62,13 @@ struct IntroductionView: View {
                             LinearGradient(
                                 gradient: Gradient(stops: [
                                     .init(color: Color.black.opacity(0), location: 0),
-                                    .init(color: Color.black.opacity(0.2), location: 1)
+                                    .init(color: Color.black.opacity(0.2), location: 0.9)
                                 ]),
                                 startPoint: UnitPoint(x: 0, y: 0),
                                 endPoint: UnitPoint(x: 0, y: 0.9)
                             )
                         )
-                        .frame(height: 135)
+                        .frame(height: 180)
                     }
                     .frame(width: screenWidth, height: imageHeight)
                     .offset(y: 25)

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct GetResultDataJSON: Decodable {
     let type: String
-    let status: String
+    let severity: String
     let confidence: Double
 }
 
@@ -278,18 +278,16 @@ struct ResultView: View {
         
         let rawImageData = imageData.base64EncodedString()
         
-        let APIEndpoint = "http://localhost:9000/2015-03-31/functions/function/invocations"
+//        let MockAPIEndpoint = "http://localhost:9000/2015-03-31/functions/function/invocations"
+        
+        let APIEndpoint = "https://4d2a66wusqqctth6rtgbns24yy0pixpa.lambda-url.us-west-1.on.aws/ "
+        
 
         var request = URLRequest(url: URL(string: APIEndpoint)!)
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("text/plain", forHTTPHeaderField: "Content-Type")
         
-        
-        do {
-            request.httpBody = try JSONEncoder().encode(GetResultBody(image: rawImageData))
-        } catch {
-            return
-        }
+        request.httpBody = rawImageData.data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: request) { rawData, response, error in
             if let error = error {
@@ -302,7 +300,7 @@ struct ResultView: View {
                 do {
                     let resultData = try JSONDecoder().decode(GetResultDataJSON.self, from: rawData)
                     self.results = [
-                        DiagnosisResult(type: resultData.type, status: resultData.status, confidence: resultData.confidence),
+                        DiagnosisResult(type: resultData.type, severity: resultData.severity, confidence: resultData.confidence),
                     ]
                 } catch {
                     print("JSON Decoding Error: \(error)")
@@ -458,47 +456,31 @@ struct DiagnosisResultView: View {
             Button(action: {
                 navigationManager.path.append(result.type)
             }) {
-                HStack {
+                HStack(alignment: .center) {
                     VStack(alignment: .leading, spacing: spacingAdjustment) {
-                        Text("Type")
+                        Text("Condition")
                             .foregroundColor(.white.opacity(0.7))
                             .font(.system(size: 18, weight: .semibold))
-                            .padding(.leading, 0)
-                        
-                        HStack {
-                            Text(result.type)
-                                .foregroundColor(.white)
-                                .font(.system(size: 30, weight: .semibold))
-                            
-                            if let status = result.status, !status.isEmpty {
-                                Text(status)
-                                    .font(.system(size: 17, weight: .medium))
-                                    .foregroundColor(status == "Malignant" ? Color(hex: "F37878") : Color(hex: "87C100"))
-                                    .padding(.horizontal, 12)
-                                    .frame(height: 25)
-                                    .background(
-                                        ZStack {
-                                            Color.black.opacity(0.5)
-                                            (status == "Malignant" ? Color(hex: "F37878") : Color(hex: "87C100")).opacity(0.15)
-                                        }
-                                    )
-                                    .clipShape(Capsule())
-                            }
-                        }
-                        .padding(.leading, 0)
+
+                        Text(result.type)
+                            .foregroundColor(.white)
+                            .font(.system(size: 30, weight: .semibold))
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(nil)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
+
                     Spacer()
-                    
+
                     Image("back")
                         .resizable()
                         .renderingMode(.template)
                         .frame(width: 12, height: 21)
                         .rotationEffect(.degrees(180))
                         .foregroundColor(.white.opacity(0.5))
-                        .frame(maxHeight: .infinity, alignment: .center)
                 }
                 .padding(19)
-                .frame(height: boxHeightType)
+                .frame(minHeight: boxHeightType)
                 .background(Color.white.opacity(0.15))
                 .cornerRadius(10)
             }
@@ -519,12 +501,23 @@ struct DiagnosisResultView: View {
                 .cornerRadius(10)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Model")
+                    Text("Severity")
                         .foregroundColor(.white.opacity(0.7))
                         .font(.system(size: 17, weight: .semibold))
-                    Text(model)
-                        .foregroundColor(.white)
-                        .font(.system(size: 25, weight: .medium))
+                    
+                    Text(
+                        result.severity == "Cancerous" ? "Malignant" :
+                        result.severity == "Precancerous" ? "At Risk" :
+                        result.severity == "Non-cancerous" ? "Benign" :
+                        result.severity
+                    )
+                    .foregroundColor(
+                        result.severity == "Cancerous" ? Color(hex: "F37878") :
+                        result.severity == "Precancerous" ? Color(hex: "FFB545") :
+                        result.severity == "Non-cancerous" ? Color(hex: "87C100") :
+                        .white
+                    )
+                    .font(.system(size: 25, weight: .medium))
                 }
                 .padding(19)
                 .frame(width: smallBoxWidth, height: boxHeightConfidenceModel, alignment: .leading)
@@ -544,7 +537,7 @@ struct DiagnosisResultView: View {
 
 struct DiagnosisResult {
     var type: String
-    var status: String?
+    var severity: String
     var confidence: Double
 }
 
