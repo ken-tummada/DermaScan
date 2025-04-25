@@ -12,6 +12,7 @@ struct GetResultDataJSON: Decodable {
     let type: String
     let severity: String
     let confidence: Double
+    let status: String
 }
 
 struct GetResultBody: Codable {
@@ -24,7 +25,7 @@ struct ResultView: View {
     @EnvironmentObject var recordsManager: RecordsManager
     @State private var selectedResultIndex = 0
     @State private var isShowingRecords = false
-    @State private var results: [DiagnosisResult]? = nil
+    @State private var results: DiagnosisResult? = nil
     @State private var fadeInOut = false
     @State private var showFinalResults = false
     @State private var shouldTriggerFadeOut = false
@@ -156,8 +157,8 @@ struct ResultView: View {
                 // Result
                 if let results = results, showFinalResults {
                     VStack {
-                        if results.isEmpty {
-                            // No Disease
+                        if results.status == "error" {
+                            // Not a skin condition
                             VStack(spacing: 20) {
                                 ZStack(alignment: .leading) {
                                     RoundedRectangle(cornerRadius: 10)
@@ -169,13 +170,13 @@ struct ResultView: View {
                                             .font(.system(size: 30, weight: .semibold))
                                             .foregroundColor(.white)
                                         
-                                        Text("No matching conditions found.")
+                                        Text("No skin conditions found.")
                                             .font(.system(size: 18, weight: .semibold))
                                             .foregroundColor(.white.opacity(0.7))
                                         
                                         Spacer().frame(height: 21)
                                         
-                                        Text("Our model may not support this condition yet. If you’re concerned, consider consulting a dermatologist.")
+                                        Text("Our model did not detect any skin condition. Please take another photo.")
                                             .font(.system(size: 16, weight: .regular))
                                             .foregroundColor(.white.opacity(0.5))
                                             .fixedSize(horizontal: false, vertical: true)
@@ -204,10 +205,9 @@ struct ResultView: View {
                                 .animation(.easeIn(duration: 0.5), value: showFinalResults)
                             }
                             .padding(.horizontal, 32)
-                        } else if results.count == 1 {
-                            // Only 1 Result
+                        } else {
                             DiagnosisResultView(
-                                result: results[0],
+                                result: results,
                                 model: model,
                                 boxHeightType: boxHeightType,
                                 boxHeightConfidenceModel: boxHeightConfidenceModel,
@@ -216,47 +216,6 @@ struct ResultView: View {
                             )
                             .transition(.opacity)
                             .animation(.easeIn(duration: 0.5), value: showFinalResults)
-                        } else {
-                            // Multiple Results
-                            VStack(spacing: 18) {
-                                VStack(alignment: .leading) {
-                                    HStack(spacing: 32) {
-                                        ForEach(0..<results.count, id: \.self) { index in
-                                            Button(action: {
-                                                withAnimation(.easeInOut(duration: 0.25)) {
-                                                    selectedResultIndex = index
-                                                }
-                                            }) {
-                                                Text("Result \(index + 1)")
-                                                    .font(.system(size: 17, weight: selectedResultIndex == index ? .semibold : .medium))
-                                                    .foregroundColor(.white.opacity(selectedResultIndex == index ? 1 : 0.5))
-                                            }
-                                        }
-                                    }
-                                    .padding(.bottom, -4)
-                                    
-                                    GeometryReader { geometry in
-                                        RoundedRectangle(cornerRadius: 100)
-                                            .fill(Color.white)
-                                            .frame(width: 24, height: 3)
-                                            .offset(x: getIndicatorOffset(results: results, selectedIndex: selectedResultIndex))
-                                            .animation(.easeInOut(duration: 0.25), value: selectedResultIndex)
-                                    }
-                                    .frame(height: 3)
-                                }
-                                .padding(.horizontal, 32)
-                                
-                                DiagnosisResultView(
-                                    result: results[selectedResultIndex],
-                                    model: model,
-                                    boxHeightType: boxHeightType,
-                                    boxHeightConfidenceModel: boxHeightConfidenceModel,
-                                    spacingAdjustment: spacingAdjustment,
-                                    smallBoxWidth: smallBoxWidth
-                                )
-                                .transition(.opacity)
-                                .animation(.easeIn(duration: 1.5), value: showFinalResults)
-                            }
                         }
                     }
                 }
@@ -278,10 +237,7 @@ struct ResultView: View {
         
         let rawImageData = imageData.base64EncodedString()
         
-//        let MockAPIEndpoint = "http://localhost:9000/2015-03-31/functions/function/invocations"
-        
-        let APIEndpoint = "https://4d2a66wusqqctth6rtgbns24yy0pixpa.lambda-url.us-west-1.on.aws/ "
-        
+        let APIEndpoint = "https://4d2a66wusqqctth6rtgbns24yy0pixpa.lambda-url.us-west-1.on.aws/"
 
         var request = URLRequest(url: URL(string: APIEndpoint)!)
         request.httpMethod = "POST"
@@ -299,9 +255,7 @@ struct ResultView: View {
             if let rawData = rawData {
                 do {
                     let resultData = try JSONDecoder().decode(GetResultDataJSON.self, from: rawData)
-                    self.results = [
-                        DiagnosisResult(type: resultData.type, severity: resultData.severity, confidence: resultData.confidence),
-                    ]
+                    self.results = DiagnosisResult(type: resultData.type, severity: resultData.severity, confidence: resultData.confidence, status: resultData.status)
                 } catch {
                     print("JSON Decoding Error: \(error)")
                 }
@@ -328,14 +282,10 @@ struct ResultView: View {
         let record = ScanRecord(
             id: id,
             imagePath: imagePath,
-            resultCount: results.count,
+            resultCount: 1,
             modelVersion: model,
-            type1: results.count > 0 ? results[0].type : "",
-            confidence1: results.count > 0 ? results[0].confidence : 0,
-            type2: results.count > 1 ? results[1].type : nil,
-            confidence2: results.count > 1 ? results[1].confidence : nil,
-            type3: results.count > 2 ? results[2].type : nil,
-            confidence3: results.count > 2 ? results[2].confidence : nil,
+            type: results.type,
+            confidence: results.confidence,
             timestamp: timestamp
         )
         
@@ -360,12 +310,12 @@ func saveResultToCSV(record: ScanRecord) {
     
     // Write Header
     if !fileManager.fileExists(atPath: csvPath.path) {
-        let header = "ID,ImagePath,ResultCount,Model,Type1,Confidence1,Type2,Confidence2,Type3,Confidence3,Timestamp\n"
+        let header = "ID,ImagePath,ResultCount,Model,Type,Confidence,Timestamp\n"
         csvText.append(header)
     }
     
     let row = """
-    \(record.id),\(record.imagePath),\(record.resultCount),\(record.modelVersion),\(record.type1),\(record.confidence1),\(record.type2 ?? ""),\(record.confidence2 ?? 0.0),\(record.type3 ?? ""),\(record.confidence3 ?? 0.0),\(record.timestamp)\n
+    \(record.id),\(record.imagePath),\(record.resultCount),\(record.modelVersion),\(record.type),\(record.confidence),\(record.timestamp)\n
     """
     
     do {
@@ -539,6 +489,7 @@ struct DiagnosisResult {
     var type: String
     var severity: String
     var confidence: Double
+    var status: String
 }
 
 // Preview
