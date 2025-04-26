@@ -9,15 +9,12 @@ from matplotlib.colors import LinearSegmentedColormap
 
 teal_cmap = LinearSegmentedColormap.from_list("custom_teal", ["#ffffff", "#0D7377"])
 
-# Paths
 base_dir = r"D:\Project\Tumor"
 val_dir = os.path.join(base_dir, "val")
 model_path = os.path.join(base_dir, "tumor_classifier.h5")
 
-# Load model
 model = load_model(model_path)
 
-# Load validation data
 img_size = (224, 224)
 val_datagen = ImageDataGenerator(rescale=1./255)
 val_generator = val_datagen.flow_from_directory(
@@ -28,31 +25,26 @@ val_generator = val_datagen.flow_from_directory(
     shuffle=False
 )
 
-# Predict
 y_true = val_generator.classes
 y_pred_prob = model.predict(val_generator, verbose=1)
 y_pred = np.argmax(y_pred_prob, axis=1)
 
-# Class labels
 class_names = list(val_generator.class_indices.keys())
 
-# Confusion matrix
 cm = confusion_matrix(y_true, y_pred)
 
 plt.figure(figsize=(6, 5))
 ax = sns.heatmap(
     cm, annot=True, fmt="d", cmap=teal_cmap, cbar=True,
     xticklabels=class_names, yticklabels=class_names,
-    annot_kws={"fontsize": 10, "weight": "bold"},  # Big numbers
-    square=True, linewidths=0,  # No internal lines
+    annot_kws={"fontsize": 10, "weight": "bold"},  
+    square=True, linewidths=0, 
 )
 
-# Add outer box manually
 for _, spine in ax.spines.items():
     spine.set_visible(True)
-    spine.set_linewidth(1.5)  # Thickness of outer box
+    spine.set_linewidth(1.5)  
 
-# Axis labels and title
 plt.xlabel('Predicted', fontsize=8)
 plt.ylabel('True', fontsize=8)
 plt.xticks(fontsize=6, rotation=45, ha='right')
