@@ -8,20 +8,14 @@ Bringing hospital-only skin screening tools to mobile devices to monitor conditi
 
 ### Approach
 
-**1 · Binary Classifier (Skin Detection)**  
-Built a lightweight CNN to filter out non-skin images before lesion classification.
+**1 · Model Development**  
+Built a lightweight CNN to filter out non-skin images, followed by fine-tuning MobileNetV2 to classify dermoscopic images by lesion type.
 
-**2 · Lesion Classifier (Tumor Detection)**  
-Fine-tuned MobileNetV2 with transfer learning to classify dermoscopic images by lesion type.
+**2 · UI Design & Frontend Development**  
+Designed upload, result, and records pages in Figma and implemented them with SwiftUI to support real-time image input and result rendering.
 
-**3 · UI Design in Figma**  
-Designed image upload, result, disease info, and records pages in Figma to guide the frontend.
-
-**4 · iOS Frontend Implementation**  
-Built in SwiftUI, supporting image input and real-time result rendering.
-
-**5 · Backend & Deployment**  
-Hosted trained models on AWS Lambda to support real-time interaction with the iOS frontend.
+**3 · Backend & Deployment**  
+Hosted trained models on AWS Lambda for real-time interaction with the iOS frontend.
 
 &nbsp;
 
@@ -34,31 +28,35 @@ Hosted trained models on AWS Lambda to support real-time interaction with the iO
 ### Methodology
 
 **Model & Training**  
-- Binary Classifier: 2 Conv2D + MaxPooling → GAP → Dense(64, ReLU) → Dropout → Sigmoid  
-- Lesion Classifier (MobileNetV2):  
-  - Phase 1: Train custom head (base frozen)  
-  - Phase 2: Fine-tune full model (cosine LR decay)  
-  - Head: GAP → Dense(512→256, ReLU) → Softmax  
-  - Trained for 30 epochs with early stopping & checkpointing
+- Binary Classifier: 2 Conv2D + MaxPooling → GAP → Dense → Dropout → Sigmoid
+- Lesion Classifier (MobileNetV2):
+  - Custom head training (base frozen)
+  - Full model (cosine LR decay)
+  - Head: GAP → Dense → Softmax
+  - 30 epochs with early stopping
 
 **Augmentation & Imbalance Handling**  
 - Augmentation: rotation, shift, zoom, shear, brightness, and flipping
-- Balanced class weights via `compute_class_weight`
+- Class balancing via `compute_class_weight`
 
 **Regularization & Optimization**  
-- Dropout (30–40%) + BatchNormalization  
-- Loss: Categorical cross-entropy  
+- Dropout (30–40%) + BatchNormalization
+- Loss: Categorical cross-entropy
 - Optimizer: Adam + cosine LR decay
 
 &nbsp;
 
 ### Results & Conclusion
 
-Our MobileNetV2 model achieved 91.4% accuracy and 0.946 mean AUC. VASC showed perfect AUC (1.00), and NV had the highest true positives (1,741). Class-weighting and augmentation maintained 0.948 specificity and 67.8% sensitivity.
+**Outcome**  
+- Our MobileNetV2 model achieved 92.8% accuracy and 0.951 mean AUC.
+- VASC reached perfect AUC (1.00), and NV had the highest true positives (1,933).
+- Class-weighting and augmentation maintained 0.957 specificity and 72.7% sensitivity.
 
-Deployed in a lightweight mobile app enabling real-time lesion classification with contextual insights. Fully operational pipeline supports scalable screening in remote/underserved areas.
-
-Area for improvement: Improve sensitivity using focal loss and SMOTE, enhance generalization with clinical metadata via multi-input modeling. Model pruning and quantization will optimize mobile performance.
+**Area for Improvement**  
+- Boost sensitivity with focal loss and SMOTE.
+- Enhance generalization using clinical metadata and multi-input models.
+- Optimize mobile performance through pruning and quantization.
 
 &nbsp;
 
