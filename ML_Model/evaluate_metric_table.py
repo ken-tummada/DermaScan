@@ -12,7 +12,7 @@ from sklearn.preprocessing import label_binarize
 
 base_dir = r"D:\Project\Tumor"
 val_dir = os.path.join(base_dir, "val")
-model_path = os.path.join(base_dir, "tumor_classifier.h5")
+model_path = os.path.join(base_dir, "ML_Model", "tumor_classifier.h5")
 
 model = load_model(model_path)
 
@@ -63,7 +63,7 @@ df.loc["Mean Value"] = df.mean()
 df = df.T 
 
 plt.figure(figsize=(12, 6))
-sns.heatmap(df, annot=True, fmt=".2f", cmap="YlGnBu",
+sns.heatmap(df, annot=True, fmt=".3f", cmap="YlGnBu",
             annot_kws={"fontsize": 15}, 
             cbar=True, linewidths=0.5)
 plt.title("Evaluation Metrics Per Class")
