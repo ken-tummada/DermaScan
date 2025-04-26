@@ -6,12 +6,8 @@ struct ScanRecord: Identifiable, Hashable {
     let imagePath: String
     let resultCount: Int
     let modelVersion: String
-    let type1: String
-    let confidence1: Double
-    let type2: String?
-    let confidence2: Double?
-    let type3: String?
-    let confidence3: Double?
+    let type: String
+    let confidence: Double
     let timestamp: String
 }
 
@@ -35,23 +31,15 @@ class RecordsManager: ObservableObject {
                            imagePath: "Melanoma",
                            resultCount: 1,
                            modelVersion: "1.0",
-                           type1: "Melanoma",
-                           confidence1: 0.96,
-                           type2: nil,
-                           confidence2: nil,
-                           type3: nil,
-                           confidence3: nil,
+                           type: "Melanoma",
+                           confidence: 0.96,
                            timestamp: "2025-03-07  15:32"),
                 ScanRecord(id: "20250307104645",
                            imagePath: "Melanoma",
                            resultCount: 0,
                            modelVersion: "1.0",
-                           type1: "",
-                           confidence1: 0,
-                           type2: nil,
-                           confidence2: nil,
-                           type3: nil,
-                           confidence3: nil,
+                           type: "",
+                           confidence: 0,
                            timestamp: "2025-03-07  10:08")
             ]
         } else {
@@ -71,28 +59,19 @@ class RecordsManager: ObservableObject {
                       let imagePath = row["ImagePath"],
                       let resultCountString = row["ResultCount"], let resultCount = Int(resultCountString),
                       let modelVersion = row["Model"],
-                      let type1 = row["Type1"],
-                      let confidence1String = row["Confidence1"], let confidence1 = Double(confidence1String),
+                      let type = row["Type"],
+                      let confidenceString = row["Confidence"], let confidence = Double(confidenceString),
                       let timestamp = row["Timestamp"] else {
                     return nil
                 }
-
-                let type2 = row["Type2"]?.isEmpty == false ? row["Type2"] : nil
-                let confidence2 = Double(row["Confidence2"] ?? "0") ?? 0.0
-                let type3 = row["Type3"]?.isEmpty == false ? row["Type3"] : nil
-                let confidence3 = Double(row["Confidence3"] ?? "0") ?? 0.0
 
                 return ScanRecord(
                     id: id,
                     imagePath: imagePath,
                     resultCount: resultCount,
                     modelVersion: modelVersion,
-                    type1: type1,
-                    confidence1: confidence1,
-                    type2: type2,
-                    confidence2: confidence2,
-                    type3: type3,
-                    confidence3: confidence3,
+                    type: type,
+                    confidence: confidence,
                     timestamp: timestamp
                 )
             }
@@ -219,7 +198,7 @@ struct RecordsView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    Text(record.resultCount == 0 ? "No Result" : record.type1)
+                    Text(record.resultCount == 0 ? "No Result" : record.type)
                         .foregroundColor(.white)
                         .font(.system(size: 23, weight: .semibold))
                         .fixedSize(horizontal: true, vertical: false)
@@ -228,10 +207,10 @@ struct RecordsView: View {
                     
                     HStack {
                         if record.resultCount > 0 {
-                            Text("\(Int(record.confidence1 * 100))%")
+                            Text("\(Int(record.confidence * 100))%")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(record.confidence1 > 0.85 ? Color(hex: "87C100") :
-                                                    (record.confidence1 > 0.7 ? Color(hex: "FFB545") : Color(hex: "F37878")))
+                                .foregroundColor(record.confidence > 0.85 ? Color(hex: "87C100") :
+                                                    (record.confidence > 0.7 ? Color(hex: "FFB545") : Color(hex: "F37878")))
                                 .fixedSize(horizontal: true, vertical: false)
                             
                             Spacer().frame(width: 15)
