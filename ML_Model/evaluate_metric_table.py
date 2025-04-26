@@ -63,7 +63,9 @@ df.loc["Mean Value"] = df.mean()
 df = df.T 
 
 plt.figure(figsize=(12, 6))
-sns.heatmap(df, annot=True, fmt=".3f", cmap="YlGnBu", cbar=True, linewidths=0.5)
+sns.heatmap(df, annot=True, fmt=".2f", cmap="YlGnBu",
+            annot_kws={"fontsize": 15}, 
+            cbar=True, linewidths=0.5)
 plt.title("Evaluation Metrics Per Class")
 plt.tight_layout()
 plt.savefig(os.path.join(base_dir, "metrics_table_heatmap.png"))
