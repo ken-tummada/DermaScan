@@ -8,7 +8,7 @@ from tensorflow.keras.models import load_model
 
 base_dir = r"D:\Project\Tumor"
 val_dir = os.path.join(base_dir, "val")
-model_path = os.path.join(base_dir, "tumor_classifier.h5")
+model_path = os.path.join(base_dir, "ML_Model", "tumor_classifier.h5")
 model = load_model(model_path)
 
 img_size = (224, 224)
@@ -26,7 +26,7 @@ y_true = val_generator.classes
 y_prob = model.predict(val_generator, verbose=1)
 y_true_onehot = label_binarize(y_true, classes=list(range(len(class_names))))
 
-plt.figure(figsize=(8, 6))
+plt.figure(figsize=(6,8))
 
 for i in range(len(class_names)):
     fpr, tpr, _ = roc_curve(y_true_onehot[:, i], y_prob[:, i])
@@ -42,9 +42,9 @@ plt.ylabel('True Positive Rate (TPR)', fontsize=10)
 plt.title('ROC Curve - Multiclass', fontsize=12)
 plt.xticks(fontsize=8)
 plt.yticks(fontsize=8)
-plt.legend(loc='lower right', fontsize=7)
+plt.legend(loc='lower right', fontsize=14)
 plt.grid(True, linestyle='--', linewidth=0.5, alpha=0.6)
 
 plt.tight_layout()
-plt.savefig(os.path.join(base_dir, "roc_curve_clean.png"), dpi=300)
+plt.savefig(os.path.join(base_dir, "roc_curve.png"), dpi=300)
 plt.show()

@@ -62,11 +62,18 @@ df = pd.DataFrame(metrics, index=class_names).astype(float)
 df.loc["Mean Value"] = df.mean()
 df = df.T 
 
-plt.figure(figsize=(12, 6))
-sns.heatmap(df, annot=True, fmt=".3f", cmap="YlGnBu",
+plt.figure(figsize=(13, 5))
+ax = sns.heatmap(df, annot=True, fmt=".3f", cmap="YlGnBu",
             annot_kws={"fontsize": 15}, 
             cbar=True, linewidths=0.5)
+
+plt.yticks(fontsize=14)
+plt.xticks(fontsize=12)
+
+cbar = ax.collections[0].colorbar
+cbar.ax.yaxis.set_tick_params(labelsize=15)
+
 plt.title("Evaluation Metrics Per Class")
 plt.tight_layout()
-plt.savefig(os.path.join(base_dir, "metrics_table_heatmap.png"))
+plt.savefig(os.path.join(base_dir, "metrics_table.png"))
 plt.show()

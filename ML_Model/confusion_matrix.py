@@ -11,7 +11,7 @@ teal_cmap = LinearSegmentedColormap.from_list("custom_teal", ["#ffffff", "#0D737
 
 base_dir = r"D:\Project\Tumor"
 val_dir = os.path.join(base_dir, "val")
-model_path = os.path.join(base_dir, "tumor_classifier.h5")
+model_path = os.path.join(base_dir, "ML_Model", "tumor_classifier.h5")
 
 model = load_model(model_path)
 
@@ -37,7 +37,7 @@ plt.figure(figsize=(6, 5))
 ax = sns.heatmap(
     cm, annot=True, fmt="d", cmap=teal_cmap, cbar=True,
     xticklabels=class_names, yticklabels=class_names,
-    annot_kws={"fontsize": 10, "weight": "bold"},  
+    annot_kws={"fontsize": 12},  
     square=True, linewidths=0, 
 )
 
@@ -45,10 +45,10 @@ for _, spine in ax.spines.items():
     spine.set_visible(True)
     spine.set_linewidth(1.5)  
 
-plt.xlabel('Predicted', fontsize=8)
-plt.ylabel('True', fontsize=8)
-plt.xticks(fontsize=6, rotation=45, ha='right')
-plt.yticks(fontsize=6, rotation=0)
+plt.xlabel('Predicted', fontsize=10)
+plt.ylabel('True', fontsize=10)
+plt.xticks(fontsize=8)
+plt.yticks(fontsize=8)
 plt.title('Confusion Matrix', fontsize=10, pad=10)
 
 plt.tight_layout(pad=1.0)
