@@ -63,12 +63,12 @@ Area for improvement: Improve sensitivity using focal loss and SMOTE, enhance ge
 &nbsp;
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e8f0feea-cb03-4345-92a6-a555cafcbe4d" width="40%" />
-  <img src="https://github.com/user-attachments/assets/4e371eef-6ced-4c23-947b-2ba85b0082a7" width="40%" />
+  <img src="https://github.com/user-attachments/assets/8974e25b-e1fb-4d6f-8e3d-b6fb138c9121" width="49%" />
+  <img src="https://github.com/user-attachments/assets/a52544fa-d49a-48ed-8d20-6263fde0c1b6" width="31%" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/05c234ce-e07a-4bc1-ab27-559f68914c2a" width="90%" />
+  <img src="https://github.com/user-attachments/assets/3bf3cbf8-c24a-4480-ad2d-b641622fee0d" width="90%" />
 </p>
 
 <p align="center">
