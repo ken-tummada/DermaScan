@@ -70,7 +70,7 @@ Hosted trained models on AWS Lambda for real-time interaction with the iOS front
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/3051de8a-fb90-4b16-a068-f2500e79ef61" width="70%" />
+  <img src="https://github.com/user-attachments/assets/9b2e26c7-9836-4832-bbe5-fafeed6e8226" width="80%" />
 </p>
 
 &nbsp;
