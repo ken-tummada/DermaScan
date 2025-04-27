@@ -61,12 +61,12 @@ Hosted trained models on AWS Lambda for real-time interaction with the iOS front
 &nbsp;
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/8974e25b-e1fb-4d6f-8e3d-b6fb138c9121" width="49%" />
-  <img src="https://github.com/user-attachments/assets/a52544fa-d49a-48ed-8d20-6263fde0c1b6" width="31%" />
+  <img src="https://github.com/user-attachments/assets/363ceff9-d4f4-4b40-a451-e46794457574" width="52%" />
+  <img src="https://github.com/user-attachments/assets/02fda6fc-42f2-4b95-a0aa-16884ec4f1fd" width="30%" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/3bf3cbf8-c24a-4480-ad2d-b641622fee0d" width="90%" />
+  <img src="https://github.com/user-attachments/assets/1efd6220-fc00-4b9d-a8ae-a063afcc39c1" width="90%" />
 </p>
 
 <p align="center">
