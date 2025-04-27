@@ -62,15 +62,13 @@ rect_bottom = plt.Rectangle((0, 0), 1, 1, fill=False, edgecolor='gray', linestyl
 ax_bottom.add_patch(rect_bottom)
 
 real_features_norm = (real_features - np.min(real_features)) / (np.max(real_features) - np.min(real_features))
-
 feature_map_real = real_features_norm.reshape(32, 40)
 
-patch_size = 4  
+patch_size = 4
 montage_rows = 8
 montage_cols = 16
 
 montage = np.zeros((montage_rows * patch_size, montage_cols * patch_size))
-
 idx = 0
 for i in range(montage_rows):
     for j in range(montage_cols):
@@ -79,7 +77,7 @@ for i in range(montage_rows):
             montage[i*patch_size:(i+1)*patch_size, j*patch_size:(j+1)*patch_size] = patch
             idx += 1
 
-ax_bottom.imshow(montage, cmap='gray', aspect='auto')
+img_bottom = ax_bottom.imshow(montage, cmap='gray', aspect='auto')
 ax_bottom.axis('off')
 
 plt.savefig(output_path, dpi=300)
