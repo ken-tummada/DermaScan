@@ -9,7 +9,7 @@ from tensorflow.keras.models import load_model
 
 base_dir = r"D:\Project\Tumor"
 val_dir = os.path.join(base_dir, "val")
-model_path = os.path.join(base_dir,"tumor_classifier.h5")
+model_path = os.path.join(base_dir,"ML_Model", "tumor_classifier.h5")
 
 img_size = (224, 224)
 batch_size = 1  
@@ -39,17 +39,3 @@ print(f"\n Validation Accuracy: {acc:.2f}")
 
 print("\n Classification Report:")
 print(classification_report(y_true, y_pred, labels=present_labels, target_names=present_class_names))
-
-print(" Confusion Matrix:")
-cm = confusion_matrix(y_true, y_pred, labels=present_labels)
-
-plt.figure(figsize=(10, 8))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
-            xticklabels=present_class_names,
-            yticklabels=present_class_names)
-plt.title("Confusion Matrix")
-plt.xlabel("Predicted")
-plt.ylabel("True")
-plt.tight_layout()
-plt.savefig(os.path.join(base_dir, "confusion_matrix.png"))
-plt.show()
