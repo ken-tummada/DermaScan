@@ -9,6 +9,10 @@ from sklearn.metrics import (roc_auc_score, average_precision_score,
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import label_binarize
+from matplotlib.colors import LinearSegmentedColormap
+
+plt.rcParams['font.family'] = 'DIN Alternate'
+custom_cmap = LinearSegmentedColormap.from_list("custom_gradient", ["#D5FDD6", "#97F0C3", "#14ADB2", "#0A585B"])
 
 base_dir = r"D:\Project\Tumor"
 val_dir = os.path.join(base_dir, "val")
@@ -60,20 +64,20 @@ for i, class_name in enumerate(class_names):
 
 df = pd.DataFrame(metrics, index=class_names).astype(float)
 df.loc["Mean Value"] = df.mean()
-df = df.T 
+df = df.T
 
-plt.figure(figsize=(13, 5))
-ax = sns.heatmap(df, annot=True, fmt=".3f", cmap="YlGnBu",
-            annot_kws={"fontsize": 15}, 
-            cbar=True, linewidths=0.5)
+plt.figure(figsize=(13, 5), dpi=300)
+ax = sns.heatmap(df, annot=True, fmt=".3f", cmap=custom_cmap,
+                 annot_kws={"fontsize": 17},
+                 cbar=True, linewidths=0.5)
 
 plt.yticks(fontsize=14)
-plt.xticks(fontsize=12)
+plt.xticks(fontsize=14)
 
 cbar = ax.collections[0].colorbar
-cbar.ax.yaxis.set_tick_params(labelsize=15)
+cbar.ax.yaxis.set_tick_params(labelsize=16)
 
-plt.title("Evaluation Metrics Per Class")
+plt.title("Evaluation Metrics Per Class", fontsize=17)
 plt.tight_layout()
-plt.savefig(os.path.join(base_dir, "metrics_table.png"))
+plt.savefig(os.path.join(base_dir, "metrics_table.png"), dpi=300)
 plt.show()
