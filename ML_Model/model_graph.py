@@ -35,15 +35,13 @@ gs = gridspec.GridSpec(3, 1, figure=fig, height_ratios=[1, 1, 1])
 
 ax_top = fig.add_subplot(gs[0])
 ax_top.axis('off')
-
 rect_top = plt.Rectangle((0, 0), 1, 1, fill=False, edgecolor='gray', linestyle='--', linewidth=3, transform=ax_top.transAxes)
 ax_top.add_patch(rect_top)
-
 ax_top.set_title('Skin Tumor Images', fontsize=22, weight='bold', pad=20)
 
 for idx, img_path in enumerate(selected_images):
     img = mpimg.imread(img_path)
-    left = 0.2 + (((idx/2)+0.05) / len(selected_images))
+    left = 0.2 + (((idx/2) + 0.05) / len(selected_images))
     ax_img = fig.add_axes([left, 0.68, 0.15, 0.15])  
     ax_img.imshow(img, cmap='gray')
     ax_img.axis('off')
@@ -51,10 +49,8 @@ for idx, img_path in enumerate(selected_images):
 
 ax_middle = fig.add_subplot(gs[1])
 ax_middle.set_title('Deep Feature Extractor (MobileNetV2 + GAP)', fontsize=22, weight='bold', pad=20)
-
 rect_middle = plt.Rectangle((0, 0), 1, 1, fill=False, edgecolor='gray', linestyle='--', linewidth=3, transform=ax_middle.transAxes)
 ax_middle.add_patch(rect_middle)
-
 ax_middle.plot(real_features, color='black', lw=1)
 ax_middle.scatter(range(len(real_features)), real_features, c=np.random.rand(len(real_features)), cmap='rainbow', s=8)
 ax_middle.text(len(real_features)-12, np.max(real_features)*0.9, '← GAP layer', fontsize=12, ha='right')
@@ -62,12 +58,28 @@ ax_middle.axis('off')
 
 ax_bottom = fig.add_subplot(gs[2])
 ax_bottom.set_title('Deep Features (1280 features)', fontsize=22, weight='bold', pad=20)
-
 rect_bottom = plt.Rectangle((0, 0), 1, 1, fill=False, edgecolor='gray', linestyle='--', linewidth=3, transform=ax_bottom.transAxes)
 ax_bottom.add_patch(rect_bottom)
 
-feature_map_real = real_features.reshape(40, 32) 
-ax_bottom.imshow(feature_map_real, cmap='gray', aspect='auto')
+real_features_norm = (real_features - np.min(real_features)) / (np.max(real_features) - np.min(real_features))
+
+feature_map_real = real_features_norm.reshape(32, 40)
+
+patch_size = 4  
+montage_rows = 8
+montage_cols = 16
+
+montage = np.zeros((montage_rows * patch_size, montage_cols * patch_size))
+
+idx = 0
+for i in range(montage_rows):
+    for j in range(montage_cols):
+        if idx < 32 * 40:
+            patch = np.ones((patch_size, patch_size)) * feature_map_real.flatten()[idx]
+            montage[i*patch_size:(i+1)*patch_size, j*patch_size:(j+1)*patch_size] = patch
+            idx += 1
+
+ax_bottom.imshow(montage, cmap='gray', aspect='auto')
 ax_bottom.axis('off')
 
 plt.savefig(output_path, dpi=300)
