@@ -7,7 +7,9 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import confusion_matrix
 from matplotlib.colors import LinearSegmentedColormap
 
-teal_cmap = LinearSegmentedColormap.from_list("custom_teal", ["#ffffff", "#0D7377"])
+plt.rcParams['font.family'] = 'DIN Alternate'
+
+teal_cmap = LinearSegmentedColormap.from_list("custom_teal", ["#F4F8F8", "#0D7377"])
 
 base_dir = r"D:\Project\Tumor"
 val_dir = os.path.join(base_dir, "val")
@@ -37,19 +39,22 @@ plt.figure(figsize=(6, 5))
 ax = sns.heatmap(
     cm, annot=True, fmt="d", cmap=teal_cmap, cbar=True,
     xticklabels=class_names, yticklabels=class_names,
-    annot_kws={"fontsize": 12},  
-    square=True, linewidths=0, 
+    annot_kws={"fontsize": 14},
+    square=True, linewidths=0,
 )
+
+cbar = ax.collections[0].colorbar
+cbar.ax.tick_params(labelsize=12)
 
 for _, spine in ax.spines.items():
     spine.set_visible(True)
-    spine.set_linewidth(1.5)  
+    spine.set_linewidth(1.5)
 
-plt.xlabel('Predicted', fontsize=10)
-plt.ylabel('True', fontsize=10)
-plt.xticks(fontsize=8)
-plt.yticks(fontsize=8)
-plt.title('Confusion Matrix', fontsize=10, pad=10)
+plt.xlabel('Predicted', fontsize=12)
+plt.ylabel('True', fontsize=12)
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+plt.title('Confusion Matrix', fontsize=14, pad=10)
 
 plt.tight_layout(pad=1.0)
 plt.savefig(os.path.join(base_dir, "confusion_matrix.png"), dpi=300)
