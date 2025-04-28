@@ -93,8 +93,8 @@ The training data for our model comes from the **International Skin Imaging Coll
 
 #### Dataset Access
 
-- [ISIC 2018 Data](https://challenge.isic-archive.com/data/#2018)
-- [ISIC 2019 Data](https://challenge.isic-archive.com/data/#2019)
+- [ISIC Challenge 2018 Data](https://challenge.isic-archive.com/data/#2018)
+- [ISIC Challenge 2019 Data](https://challenge.isic-archive.com/data/#2019)
 
 &nbsp;
 
