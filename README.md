@@ -29,11 +29,7 @@ Hosted trained models on AWS Lambda for real-time interaction with the iOS front
 
 **Model & Training**  
 - Binary Classifier: 2 Conv2D + MaxPooling → GAP → Dense → Dropout → Sigmoid
-- Lesion Classifier (MobileNetV2):
-  - Custom head training (base frozen)
-  - Full model (cosine LR decay)
-  - Head: GAP → Dense → Softmax
-  - 30 epochs with early stopping
+- Lesion Classifier: Head: GAP → Dense → Softmax
 
 **Augmentation & Imbalance Handling**  
 - Augmentation: rotation, shift, zoom, shear, brightness, and flipping
@@ -41,8 +37,9 @@ Hosted trained models on AWS Lambda for real-time interaction with the iOS front
 
 **Regularization & Optimization**  
 - Dropout (30–40%) + BatchNormalization
-- Loss: Categorical cross-entropy
-- Optimizer: Adam + cosine LR decay
+- Adam + cosine LR decay, categorical cross-entropy loss
+
+![Extractor@3x](https://github.com/user-attachments/assets/e48e3036-af89-4bdb-9cf0-3dc0864373b5)
 
 &nbsp;
 
@@ -51,7 +48,7 @@ Hosted trained models on AWS Lambda for real-time interaction with the iOS front
 **Outcome**  
 - Our MobileNetV2 model achieved 92.8% accuracy and 0.951 mean AUC.
 - VASC reached perfect AUC (1.00), and NV had the highest true positives (1,933).
-- Class-weighting and augmentation maintained 0.957 specificity and 72.7% sensitivity.
+- Achieved 0.957 specificity and 72.7% sensitivity, aided by class-weighting and augmentation.
 
 **Area for Improvement**  
 - Boost sensitivity with focal loss and SMOTE.
