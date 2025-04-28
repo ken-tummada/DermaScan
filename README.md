@@ -39,7 +39,11 @@ Hosted trained models on AWS Lambda for real-time interaction with the iOS front
 - Dropout (30–40%) + BatchNormalization
 - Adam + cosine LR decay, categorical cross-entropy loss
 
-![Extractor@3x](https://github.com/user-attachments/assets/e48e3036-af89-4bdb-9cf0-3dc0864373b5)
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/e48e3036-af89-4bdb-9cf0-3dc0864373b5" width="100%" />
+  <br>
+  <em>Feature extraction visualization inspired by <a href="https://www.sciencedirect.com/science/article/abs/pii/B9780323901840000096">Yashvi Chandola et al., 2023, Chapter 8, Hybrid Intelligent Techniques for Pattern Analysis and Understanding, Elsevier.</a></em>
+</p>
 
 &nbsp;
 
