@@ -176,7 +176,7 @@ struct ResultView: View {
                                         
                                         Spacer().frame(height: 21)
                                         
-                                        Text("Our model did not detect any skin condition. Please take another photo.")
+                                        Text("Please upload a close-up of a skin lesion. Unclear or unrelated images may produce invalid results.")
                                             .font(.system(size: 16, weight: .regular))
                                             .foregroundColor(.white.opacity(0.5))
                                             .fixedSize(horizontal: false, vertical: true)
@@ -532,7 +532,7 @@ struct DiagnosisResult {
 
 #Preview {
     NavigationStack {
-        ResultView(image: UIImage(named: "Melanoma")!, model: "1.0")
+        ResultView(image: UIImage(named: "Null")!, model: "1.0")
             .environmentObject(NavigationManager())
     }
 }
