@@ -110,7 +110,7 @@ We gratefully acknowledge the generous release of the ISIC datasets under the CC
 
 The corresponding publications are:
 
-1. Tschandl P., Rosendahl C. & Kittler H. The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions. _Sci. Data_ 5, 180161 (2018). https://doi.org/10.1038/sdata.2018.161
+1. Tschandl P., Rosendahl C. & Kittler H. The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions. _Sci. Data_ 5, 180161 (2018). https://doi.org/10.1038/sdata.2018.161.
 
 2. Noel C. F. Codella et al. "Skin Lesion Analysis Toward Melanoma Detection: A Challenge at the 2017 International Symposium on Biomedical Imaging (ISBI), Hosted by the International Skin Imaging Collaboration (ISIC)", arXiv:1710.05006, arXiv:1902.03368.
 
