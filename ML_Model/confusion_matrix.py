@@ -35,9 +35,11 @@ class_names = list(val_generator.class_indices.keys())
 
 cm = confusion_matrix(y_true, y_pred)
 
+cm_prob = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
 plt.figure(figsize=(6, 5))
 ax = sns.heatmap(
-    cm, annot=True, fmt="d", cmap=teal_cmap, cbar=True,
+    cm_prob, annot=True, fmt=".2f", cmap=teal_cmap, cbar=True,
     xticklabels=class_names, yticklabels=class_names,
     annot_kws={"fontsize": 14},
     square=True, linewidths=0,
@@ -57,5 +59,5 @@ plt.yticks(fontsize=10)
 plt.title('Confusion Matrix', fontsize=14, pad=10)
 
 plt.tight_layout(pad=1.0)
-plt.savefig(os.path.join(base_dir, "confusion_matrix.png"), dpi=300)
+plt.savefig(os.path.join(base_dir, "confusion_matrix_prob.png"), dpi=300)
 plt.show()

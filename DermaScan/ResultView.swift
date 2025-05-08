@@ -532,7 +532,7 @@ struct DiagnosisResult {
 
 #Preview {
     NavigationStack {
-        ResultView(image: UIImage(named: "Null")!, model: "1.0")
+        ResultView(image: UIImage(named: "Test")!, model: "1.0")
             .environmentObject(NavigationManager())
     }
 }
